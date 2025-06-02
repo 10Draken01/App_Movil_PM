@@ -40,7 +40,10 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.lifecycle.viewmodel.compose)   //viewModel()
+    implementation(libs.com.squareup.retrofit2.retrofit)        // Retrofit
+    implementation(libs.com.squareup.retrofit2.converter.json)  // JSON
+    implementation(libs.io.coil.kt.coil.compose)                // IO
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
