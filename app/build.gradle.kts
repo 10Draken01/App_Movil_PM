@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+
+    implementation(libs.androidx.navigation.compose) // navegacion
     implementation(libs.androidx.lifecycle.viewmodel.compose)   //viewModel()
     implementation(libs.com.squareup.retrofit2.retrofit)        // Retrofit
     implementation(libs.com.squareup.retrofit2.converter.json)  // JSON
