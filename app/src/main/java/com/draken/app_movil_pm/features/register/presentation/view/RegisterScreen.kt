@@ -41,9 +41,9 @@ import com.draken.app_movil_pm.R
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
@@ -56,10 +56,11 @@ import com.draken.app_movil_pm.features.register.presentation.viewmodel.Register
 import kotlinx.coroutines.delay
 
 @Composable
-fun RegisterScreen(viewModel: RegisterViewModel = viewModel(
-    factory = RegisterViewModelFactory(AppModule.registerUseCase)
-),
-                   onNavigateToLogin: () -> Unit = {},
+fun RegisterScreen(
+    viewModel: RegisterViewModel = viewModel(
+        factory = RegisterViewModelFactory(AppModule.registerUseCase)
+    ),
+    onNavigateToLogin: () -> Unit = {},
 ) {
     val username by viewModel.usernameText.collectAsState()
     val email by viewModel.emailText.collectAsState()

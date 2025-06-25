@@ -43,8 +43,11 @@ class LoginViewModel(
             try {
                 _loading.value = true
 
-                val result: Login = loginUseCase(_emailText.value.trim(), _passwordText.value.trim())
-                _stateResponse.value = result
+                val result = loginUseCase(_emailText.value.trim(), _passwordText.value.trim())
+                result.onSuccess {
+                    data -> _stateResponse.value = data
+                }
+
             } catch (e: Exception) {
                 _stateResponse.value = Login(error = "Error de conexión. Inténtalo de nuevo.")
             } finally {

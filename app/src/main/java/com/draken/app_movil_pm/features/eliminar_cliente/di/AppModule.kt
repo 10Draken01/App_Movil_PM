@@ -8,9 +8,16 @@ import com.draken.app_movil_pm.features.eliminar_cliente.domain.repository.Elimi
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.usecase.EliminarClienteUseCase
 
 object AppModule {
-    private val api: EliminarClienteService = RetrofitHelper.retrofitInstance.create(
-        EliminarClienteService::class.java)
 
-    private val repository: EliminarClienteRepository = EliminarClienteRepositoryImpl(api)
-    val eliminarClienteUseCase = EliminarClienteUseCase (repository)
+    private val eliminarClienteService: EliminarClienteService by lazy {
+        RetrofitHelper.getService(EliminarClienteService::class.java)
+    }
+
+    private val repositoryEliminarCliente: EliminarClienteRepository by lazy {
+        EliminarClienteRepositoryImpl(eliminarClienteService)
+    }
+
+    val eliminarClienteUseCase: EliminarClienteUseCase by lazy {
+        EliminarClienteUseCase(repositoryEliminarCliente)
+    }
 }
