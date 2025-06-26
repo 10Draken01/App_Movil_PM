@@ -7,8 +7,17 @@ import com.draken.app_movil_pm.features.register.domain.repository.RegisterRepos
 import com.draken.app_movil_pm.features.register.domain.usecase.RegisterUseCase
 
 object AppModule {
-    private val api: RegisterService = RetrofitHelper.retrofitInstance.create(RegisterService::class.java)
 
-    private val repository: RegisterRepository = RegisterRepositoryImpl(api)
-    val registerUseCase = RegisterUseCase (repository)
+    // Register
+    private val registerService: RegisterService by lazy {
+        RetrofitHelper.getService(RegisterService::class.java)
+    }
+
+    private val registerRepository: RegisterRepository by lazy {
+        RegisterRepositoryImpl(registerService)
+    }
+
+    val registerUseCase: RegisterUseCase by lazy {
+        RegisterUseCase(registerRepository)
+    }
 }

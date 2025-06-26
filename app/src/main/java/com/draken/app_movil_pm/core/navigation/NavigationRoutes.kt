@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.navigation
+package com.draken.app_movil_pm.core.navigation
 
 
 object NavigationRoutes {

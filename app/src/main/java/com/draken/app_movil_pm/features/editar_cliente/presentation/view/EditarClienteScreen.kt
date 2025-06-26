@@ -35,7 +35,7 @@ import com.draken.app_movil_pm.features.editar_cliente.presentation.view.compone
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.IconInput
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModel
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModelFactory
-import com.draken.app_movil_pm.navigation.SharedDataViewModel
+import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
 import kotlinx.coroutines.delay
 
 @Composable

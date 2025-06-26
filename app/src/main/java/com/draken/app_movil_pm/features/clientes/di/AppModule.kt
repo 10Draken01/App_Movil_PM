@@ -7,8 +7,15 @@ import com.draken.app_movil_pm.features.clientes.domain.repository.ClienteReposi
 import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesUseCase
 
 object AppModule {
-    private val api: ClienteService = RetrofitHelper.retrofitInstance.create(ClienteService::class.java)
+    private val clienteService: ClienteService by lazy {
+        RetrofitHelper.getService(ClienteService::class.java)
+    }
 
-    private val repository: ClienteRepository = ClienteRepositoryImpl(api)
-    val getClientesUseCase = GetClientesUseCase(repository)
+    private val clienteRepository: ClienteRepository by lazy {
+        ClienteRepositoryImpl(clienteService)
+    }
+
+    val getClientesUseCase: GetClientesUseCase by lazy {
+        GetClientesUseCase(clienteRepository)
+    }
 }

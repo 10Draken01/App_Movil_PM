@@ -5,17 +5,23 @@ import com.draken.app_movil_pm.features.login.data.datasource.remote.LoginServic
 import com.draken.app_movil_pm.features.login.data.model.LoginDto
 import com.draken.app_movil_pm.features.login.domain.model.Login
 import com.draken.app_movil_pm.features.login.domain.repository.LoginRepository
+import com.draken.app_movil_pm.features.login.domain.repository.TokenRepository
 import java.io.IOException
 
-class LoginRepositoryImpl(private val api: LoginService) : LoginRepository {
+class LoginRepositoryImpl(
+    private val api: LoginService,
+    private val tokenRepository: TokenRepository,
+) : LoginRepository {
     override suspend fun login(email: String, password: String): Login {
         return try {
             val res = api.login(loginDto = LoginDto(email, password))
 
             if (res.isSuccessful && res.body() != null) {
                 val loginResponseDto = res.body()!!
+                val authHeader = res.headers()["Authorization"]
+                val token = authHeader?.removePrefix("Bearer ")?.trim()!!
+                tokenRepository.saveToken(token)
                 // Guardar el token usando el DTO
-                RetrofitHelper.setToken(loginResponseDto.token)
                 // Convertir DTO a modelo de dominio
                 loginResponseDto.toDomain()
             } else {

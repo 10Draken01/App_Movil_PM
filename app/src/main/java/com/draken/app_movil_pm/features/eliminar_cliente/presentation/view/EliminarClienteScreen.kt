@@ -31,15 +31,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import com.draken.app_movil_pm.features.eliminar_cliente.di.AppModule
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.Cliente
-import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.CharacterIcon
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.FormButtomCustom
-import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.InputForm
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.molecules.DataCliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModel
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModelFactory
-import com.draken.app_movil_pm.navigation.SharedDataViewModel
+import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
 import kotlinx.coroutines.delay
-import com.draken.app_movil_pm.R
 
 @Composable
 fun EliminarClienteScreen(

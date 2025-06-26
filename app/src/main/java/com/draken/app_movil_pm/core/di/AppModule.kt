@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.features.login.di
+package com.draken.app_movil_pm.core.di
 
 import android.content.Context
 import com.draken.app_movil_pm.core.http.RetrofitHelper
@@ -28,22 +28,5 @@ object AppModule {
             RetrofitHelper.init(dataStoreManager)
             isInitialized = true
         }
-    }
-
-    // Login
-    private val tokenRepository: TokenRepository by lazy {
-        TokenRepositoryImpl(dataStoreManager)
-    }
-
-    private val loginService: LoginService by lazy {
-        RetrofitHelper.getService(LoginService::class.java)
-    }
-
-    private val loginRepository: LoginRepository by lazy {
-        LoginRepositoryImpl(loginService, tokenRepository)
-    }
-
-    val loginUseCase: LoginUseCase by lazy {
-        LoginUseCase(loginRepository)
     }
 }

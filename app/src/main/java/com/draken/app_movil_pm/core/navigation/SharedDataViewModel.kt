@@ -1,5 +1,5 @@
 // SharedDataViewModel.kt
-package com.draken.app_movil_pm.navigation
+package com.draken.app_movil_pm.core.navigation
 
 import androidx.lifecycle.ViewModel
 import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
