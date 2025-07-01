@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.navigation
+package com.draken.app_movil_pm.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel

@@ -7,17 +7,20 @@ import com.draken.app_movil_pm.features.editar_cliente.data.repository.EditarCli
 import com.draken.app_movil_pm.features.editar_cliente.domain.repository.EditarClienteRepository
 import com.draken.app_movil_pm.features.editar_cliente.domain.usecase.EditarClienteUseCase
 
-object AppModule {
+object editarClienteModule {
 
+    init {
+        RetrofitHelper.init()
+    }
     private val editarClienteService: EditarClienteService by lazy {
         RetrofitHelper.getService(EditarClienteService::class.java)
     }
 
-    private val repositoryEditarCliente: EditarClienteRepository by lazy {
+    private val editarClienteRepository: EditarClienteRepository by lazy {
         EditarClienteRepositoryImpl(editarClienteService)
     }
 
     val editarClienteUseCase: EditarClienteUseCase by lazy {
-        EditarClienteUseCase(repositoryEditarCliente)
+        EditarClienteUseCase(editarClienteRepository)
     }
 }

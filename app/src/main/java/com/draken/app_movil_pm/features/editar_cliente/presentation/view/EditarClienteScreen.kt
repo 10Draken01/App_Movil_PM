@@ -29,20 +29,20 @@ import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.atoms.FormButtomCustom
-import com.draken.app_movil_pm.features.editar_cliente.di.AppModule
+import com.draken.app_movil_pm.features.editar_cliente.di.editarClienteModule
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.atoms.InputForm
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.Form
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.IconInput
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModel
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModelFactory
-import com.draken.app_movil_pm.navigation.SharedDataViewModel
+import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun EditarClienteScreen(
     sharedViewModel: SharedDataViewModel,
     viewModel: EditarClienteViewModel = viewModel(
-        factory = EditarClienteViewModelFactory(AppModule.editarClienteUseCase)
+        factory = EditarClienteViewModelFactory(editarClienteModule.editarClienteUseCase)
     ),
     onNavigateToClientes: () -> Unit = {}
 ) {

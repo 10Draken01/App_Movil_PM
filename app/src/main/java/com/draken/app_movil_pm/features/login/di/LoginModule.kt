@@ -1,32 +1,23 @@
 package com.draken.app_movil_pm.features.login.di
 
-import android.content.Context
+import com.draken.app_movil_pm.core.di.DataStoreModule
 import com.draken.app_movil_pm.core.http.RetrofitHelper
 import com.draken.app_movil_pm.core.store.local.DataStoreManager
 import com.draken.app_movil_pm.features.login.data.datasource.remote.LoginService
 import com.draken.app_movil_pm.features.login.data.repository.LoginRepositoryImpl
-import com.draken.app_movil_pm.core.repositoryImpl.TokenRepositoryImpl
+import com.draken.app_movil_pm.features.login.data.repository.TokenRepositoryImpl
 import com.draken.app_movil_pm.features.login.domain.repository.LoginRepository
-import com.draken.app_movil_pm.core.repository.TokenRepository
+import com.draken.app_movil_pm.features.login.domain.repository.TokenRepository
 import com.draken.app_movil_pm.features.login.domain.usecase.LoginUseCase
 
-object AppModule {
-
-    private lateinit var appContext: Context
-    private lateinit var dataStoreManager: DataStoreManager
-
-    private var isInitialized = false
-
-    fun init(context: Context) {
-        if (!isInitialized) {
-            appContext = context.applicationContext
-            dataStoreManager = DataStoreManager(appContext)
-            RetrofitHelper.init(dataStoreManager)
-            isInitialized = true
-        }
+object LoginModule {
+    init {
+        RetrofitHelper.init()
     }
 
-    // Repository
+    private var dataStoreManager: DataStoreManager = DataStoreModule.dataStoreManager
+
+    // Login
     private val tokenRepository: TokenRepository by lazy {
         TokenRepositoryImpl(dataStoreManager)
     }
@@ -35,11 +26,11 @@ object AppModule {
         RetrofitHelper.getService(LoginService::class.java)
     }
 
-    private val repositoryLogin: LoginRepository by lazy {
-        LoginRepositoryImpl(loginService)
+    private val loginRepository: LoginRepository by lazy {
+        LoginRepositoryImpl(loginService, tokenRepository)
     }
 
     val loginUseCase: LoginUseCase by lazy {
-        LoginUseCase(repositoryLogin, tokenRepository)
+        LoginUseCase(loginRepository)
     }
 }

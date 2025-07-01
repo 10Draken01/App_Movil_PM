@@ -8,14 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.draken.app_movil_pm.features.login.presentation.view.LoginScreen
-import com.draken.app_movil_pm.features.register.presentation.view.RegisterScreen
-import com.draken.app_movil_pm.navigation.AppNavigation
+import com.draken.app_movil_pm.core.appcontext.AppContextHolder
+import com.draken.app_movil_pm.core.navigation.AppNavigation
+import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.AgregarClienteScreen
 import com.draken.app_movil_pm.ui.theme.App_Movil_PMTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppContextHolder.init(this)
         enableEdgeToEdge()
         setContent {
             App_Movil_PMTheme {
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation()
+                    // AppNavigation()
+                    AgregarClienteScreen()
                 }
             }
         }

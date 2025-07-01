@@ -6,17 +6,19 @@ import com.draken.app_movil_pm.features.agregar_cliente.data.repository.AgregarC
 import com.draken.app_movil_pm.features.agregar_cliente.domain.repository.AgregarClienteRepository
 import com.draken.app_movil_pm.features.agregar_cliente.domain.usecase.AgregarClienteUseCase
 
-object AppModule {
-
+object agregarClienteModule {
+    init {
+        RetrofitHelper.init()
+    }
     private val agregarClienteService: AgregarClienteService by lazy {
         RetrofitHelper.getService(AgregarClienteService::class.java)
     }
 
-    private val repositoryAgregarCliente: AgregarClienteRepository by lazy {
+    private val agregarClienteRepository: AgregarClienteRepository by lazy {
         AgregarClienteRepositoryImpl(agregarClienteService)
     }
 
     val agregarClienteUseCase: AgregarClienteUseCase by lazy {
-        AgregarClienteUseCase(repositoryAgregarCliente)
+        AgregarClienteUseCase(agregarClienteRepository)
     }
 }

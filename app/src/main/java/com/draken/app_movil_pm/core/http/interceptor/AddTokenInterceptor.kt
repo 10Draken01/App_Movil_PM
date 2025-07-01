@@ -3,7 +3,6 @@ package com.draken.app_movil_pm.core.http.interceptor
 import android.util.Log
 import com.draken.app_movil_pm.core.store.local.DataStoreManager
 import com.draken.app_movil_pm.core.store.local.PreferenceKeys
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response

@@ -1,38 +1,21 @@
 package com.draken.app_movil_pm.features.login.presentation.view
 
-import android.graphics.ColorSpace
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.draken.app_movil_pm.R
-import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,31 +23,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import com.draken.app_movil_pm.features.clientes.di.AppModule
+import com.draken.app_movil_pm.features.clientes.di.clientesModule
 import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
-import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.ButtonIconCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.TopBarCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ClienteCard
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ControlesPaginas
 import com.draken.app_movil_pm.features.clientes.presentation.viewmodel.ClientesViewModel
 import com.draken.app_movil_pm.features.clientes.presentation.viewmodel.ClientesViewModelFactory
-import kotlin.math.ceil
 import kotlin.math.min
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClientesScreen(
     viewModel: ClientesViewModel = viewModel(
-        factory = ClientesViewModelFactory (AppModule.getClientesUseCase)
+        factory = ClientesViewModelFactory (clientesModule.getClientesUseCase)
     ),
     onNavigateToAgregarCliente: () -> Unit = {},
     onNavigateToEditarCliente: (cliente: Cliente) -> Unit = {},

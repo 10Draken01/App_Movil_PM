@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.navigation.types
+package com.draken.app_movil_pm.core.navigation.types
 
 data class Cliente(
     val clave_cliente: String,
