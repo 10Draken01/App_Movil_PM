@@ -1,5 +1,6 @@
 package com.draken.app_movil_pm.core.http
 
+import com.draken.app_movil_pm.core.di.DataStoreModule
 import com.draken.app_movil_pm.core.http.interceptor.AddTokenInterceptor
 import com.draken.app_movil_pm.core.http.interceptor.TokenCaptureInterceptor
 import com.draken.app_movil_pm.core.http.interceptor.provideLoggingInterceptor
@@ -12,14 +13,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
-    private const val BASE_URL = "http://192.168.1.82:8000/api/"
+    private const val BASE_URL = "http://172.18.192.1:8000/api/"
     private const val TIMEOUT = 20L
 
     private var retrofit: Retrofit? = null
-    private var dataStoreManager : DataStoreManager? = null
 
-    fun init(dataStore : DataStoreManager, extraInterceptors: List<Interceptor> = emptyList()) {
-        dataStoreManager = dataStore
+    fun init(extraInterceptors: List<Interceptor> = emptyList()) {
         if (retrofit == null) {
             synchronized(this) {
                 if (retrofit == null) {
@@ -49,8 +48,8 @@ object RetrofitHelper {
             .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(AddTokenInterceptor(requireNotNull(dataStoreManager)))
-            .addInterceptor(TokenCaptureInterceptor(requireNotNull(dataStoreManager)))
+            .addInterceptor(AddTokenInterceptor(requireNotNull(DataStoreModule.dataStoreManager)))
+            .addInterceptor(TokenCaptureInterceptor(requireNotNull(DataStoreModule.dataStoreManager)))
             .addInterceptor(provideLoggingInterceptor())
             .apply {
                 extraInterceptors.forEach { addInterceptor(it) }

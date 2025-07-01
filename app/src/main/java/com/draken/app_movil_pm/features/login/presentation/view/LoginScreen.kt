@@ -43,14 +43,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import com.draken.app_movil_pm.features.login.di.AppModule
+import com.draken.app_movil_pm.features.login.di.LoginModule
 import com.draken.app_movil_pm.features.login.presentation.viewmodel.LoginViewModelFactory
 import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(
-        factory = LoginViewModelFactory(AppModule.loginUseCase)
+        factory = LoginViewModelFactory(LoginModule.loginUseCase)
     ),
     onNavigateToRegister: () -> Unit = {},
     onNavigateToClientes: () -> Unit = {}

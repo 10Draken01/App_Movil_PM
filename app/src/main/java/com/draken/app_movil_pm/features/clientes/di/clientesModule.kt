@@ -6,7 +6,12 @@ import com.draken.app_movil_pm.features.clientes.data.repository.ClienteReposito
 import com.draken.app_movil_pm.features.clientes.domain.repository.ClienteRepository
 import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesUseCase
 
-object AppModule {
+object clientesModule {
+
+    init {
+        RetrofitHelper.init()
+    }
+
     private val clienteService: ClienteService by lazy {
         RetrofitHelper.getService(ClienteService::class.java)
     }

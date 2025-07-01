@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,8 +28,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import com.draken.app_movil_pm.features.agregar_cliente.di.AppModule
+import com.draken.app_movil_pm.features.agregar_cliente.di.agregarClienteModule
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.atoms.FormButtomCustom
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.molecules.Form
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.molecules.IconInput
@@ -39,7 +42,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun AgregarClienteScreen(
     viewModel: AgregarClienteViewModel = viewModel(
-        factory = AgregarClienteViewModelFactory (AppModule.agregarClienteUseCase)
+        factory = AgregarClienteViewModelFactory (agregarClienteModule.agregarClienteUseCase)
     ),
     onNavigateToClientes: () -> Unit = {}
 ) {
@@ -98,9 +101,8 @@ fun AgregarClienteScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Form( inputs = inputs )
-
-            IconInput(
+            Form(
+                inputs = inputs,
                 icons = icons,
                 characterIcon = characterIcon,
                 onChangeCharacterIcon = viewModel::onChangeCharacterIcon

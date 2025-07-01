@@ -7,7 +7,11 @@ import com.draken.app_movil_pm.features.eliminar_cliente.data.repository.Elimina
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.repository.EliminarClienteRepository
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.usecase.EliminarClienteUseCase
 
-object AppModule {
+object eliminarClienteModule {
+
+    init {
+        RetrofitHelper.init()
+    }
 
     private val eliminarClienteService: EliminarClienteService by lazy {
         RetrofitHelper.getService(EliminarClienteService::class.java)
