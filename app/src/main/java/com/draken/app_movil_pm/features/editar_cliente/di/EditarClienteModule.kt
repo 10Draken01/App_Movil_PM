@@ -7,7 +7,7 @@ import com.draken.app_movil_pm.features.editar_cliente.data.repository.EditarCli
 import com.draken.app_movil_pm.features.editar_cliente.domain.repository.EditarClienteRepository
 import com.draken.app_movil_pm.features.editar_cliente.domain.usecase.EditarClienteUseCase
 
-object editarClienteModule {
+object EditarClienteModule {
 
     init {
         RetrofitHelper.init()

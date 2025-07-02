@@ -29,7 +29,7 @@ import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import com.draken.app_movil_pm.features.eliminar_cliente.di.eliminarClienteModule
+import com.draken.app_movil_pm.features.eliminar_cliente.di.EliminarClienteModule
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.FormButtomCustom
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.molecules.DataCliente
@@ -42,7 +42,7 @@ import kotlinx.coroutines.delay
 fun EliminarClienteScreen(
     sharedViewModel: SharedDataViewModel,
     viewModel: EliminarClienteViewModel = viewModel(
-        factory = EliminarClienteViewModelFactory (eliminarClienteModule.eliminarClienteUseCase)
+        factory = EliminarClienteViewModelFactory (EliminarClienteModule.eliminarClienteUseCase)
     ),
     onNavigateToClientes: () -> Unit = {}
 ) {

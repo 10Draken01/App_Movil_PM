@@ -1,7 +1,7 @@
 package com.draken.app_movil_pm.core.repositoryImpl
 
-import com.draken.app_movil_pm.core.store.local.DataStoreManager
-import com.draken.app_movil_pm.core.store.local.PreferenceKeys
+import com.draken.app_movil_pm.core.datastore.DataStoreManager
+import com.draken.app_movil_pm.core.datastore.PreferenceKeys
 import com.draken.app_movil_pm.core.repository.TokenRepository
 
 class TokenRepositoryImpl(

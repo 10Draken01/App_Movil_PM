@@ -7,7 +7,7 @@ import com.draken.app_movil_pm.features.eliminar_cliente.data.repository.Elimina
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.repository.EliminarClienteRepository
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.usecase.EliminarClienteUseCase
 
-object eliminarClienteModule {
+object EliminarClienteModule {
 
     init {
         RetrofitHelper.init()

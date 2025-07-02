@@ -23,7 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import com.draken.app_movil_pm.features.clientes.di.clientesModule
+import com.draken.app_movil_pm.features.clientes.di.ClientesModule
 import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.TopBarCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ClienteCard
@@ -36,7 +36,7 @@ import kotlin.math.min
 @Composable
 fun ClientesScreen(
     viewModel: ClientesViewModel = viewModel(
-        factory = ClientesViewModelFactory (clientesModule.getClientesUseCase)
+        factory = ClientesViewModelFactory (ClientesModule.getClientesUseCase)
     ),
     onNavigateToAgregarCliente: () -> Unit = {},
     onNavigateToEditarCliente: (cliente: Cliente) -> Unit = {},

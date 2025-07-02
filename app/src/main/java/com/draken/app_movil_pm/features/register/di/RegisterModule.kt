@@ -6,7 +6,7 @@ import com.draken.app_movil_pm.features.register.data.repository.RegisterReposit
 import com.draken.app_movil_pm.features.register.domain.repository.RegisterRepository
 import com.draken.app_movil_pm.features.register.domain.usecase.RegisterUseCase
 
-object AppModule {
+object RegisterModule {
 
     // Register
     private val registerService: RegisterService by lazy {

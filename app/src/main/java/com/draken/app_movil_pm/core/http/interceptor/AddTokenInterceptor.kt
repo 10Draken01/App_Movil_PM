@@ -1,8 +1,8 @@
 package com.draken.app_movil_pm.core.http.interceptor
 
 import android.util.Log
-import com.draken.app_movil_pm.core.store.local.DataStoreManager
-import com.draken.app_movil_pm.core.store.local.PreferenceKeys
+import com.draken.app_movil_pm.core.datastore.DataStoreManager
+import com.draken.app_movil_pm.core.datastore.PreferenceKeys
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response

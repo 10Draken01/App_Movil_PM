@@ -4,16 +4,15 @@ import com.draken.app_movil_pm.core.di.DataStoreModule
 import com.draken.app_movil_pm.core.http.interceptor.AddTokenInterceptor
 import com.draken.app_movil_pm.core.http.interceptor.TokenCaptureInterceptor
 import com.draken.app_movil_pm.core.http.interceptor.provideLoggingInterceptor
-import com.draken.app_movil_pm.core.store.local.DataStoreManager
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
-    private const val BASE_URL = "http://172.18.192.1:8000/api/"
+    // CASA COMPU 192.168.0.24
+    private const val BASE_URL = "http://192.168.0.24:8000/api/"
     private const val TIMEOUT = 20L
 
     private var retrofit: Retrofit? = null

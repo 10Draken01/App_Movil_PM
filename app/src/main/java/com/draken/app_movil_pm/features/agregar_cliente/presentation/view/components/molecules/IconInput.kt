@@ -16,19 +16,9 @@ fun IconInput(
     characterIcon: Int,
     onChangeCharacterIcon: (Int) -> Unit
 ){
-    Text(
-        text = "Icono de Cliente",
-        fontSize = 15.sp,
-        fontFamily = Spooftrial_regular,
-    )
-
-    Spacer(modifier = Modifier.height(5.dp))
-
     IconSelection(
         icons = icons,
         characterIcon = characterIcon,
         onChangeCharacterIcon = onChangeCharacterIcon
     )
-
-    Spacer(modifier = Modifier.height(15.dp))
 }

@@ -47,7 +47,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import com.draken.app_movil_pm.features.register.di.AppModule
+import com.draken.app_movil_pm.features.register.di.RegisterModule
 import com.draken.app_movil_pm.features.register.presentation.viewmodel.RegisterViewModel
 import com.draken.app_movil_pm.features.register.presentation.viewmodel.RegisterViewModelFactory
 import kotlinx.coroutines.delay
@@ -55,7 +55,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(
-        factory = RegisterViewModelFactory(AppModule.registerUseCase)
+        factory = RegisterViewModelFactory(RegisterModule.registerUseCase)
     ),
     onNavigateToLogin: () -> Unit = {},
 ) {

@@ -6,7 +6,7 @@ import com.draken.app_movil_pm.features.agregar_cliente.data.repository.AgregarC
 import com.draken.app_movil_pm.features.agregar_cliente.domain.repository.AgregarClienteRepository
 import com.draken.app_movil_pm.features.agregar_cliente.domain.usecase.AgregarClienteUseCase
 
-object agregarClienteModule {
+object AgregarClienteModule {
     init {
         RetrofitHelper.init()
     }

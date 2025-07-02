@@ -5,5 +5,7 @@
         <domain includeSubdomains="false">192.168.0.1</domain>
         // celular
         <domain includeSubdomains="false">172.18.192.1</domain>
+        // CASA COMPU
+        <domain includeSubdomains="false">192.168.0.24</domain>
     </domain-config>
 </network-security-config>
