@@ -2,7 +2,6 @@ package com.draken.app_movil_pm.features.agregar_cliente.data.repository
 
 import com.draken.app_movil_pm.features.agregar_cliente.data.datasource.remote.AgregarClienteService
 import com.draken.app_movil_pm.features.agregar_cliente.data.model.AgregarClienteDto
-import com.draken.app_movil_pm.features.agregar_cliente.domain.model.Cliente
 import com.draken.app_movil_pm.features.agregar_cliente.domain.model.Response
 import com.draken.app_movil_pm.features.agregar_cliente.domain.repository.AgregarClienteRepository
 import java.io.IOException
@@ -13,7 +12,7 @@ class AgregarClienteRepositoryImpl(private val api: AgregarClienteService) : Agr
         nombre: String,
         celular: String,
         email: String,
-        character_icon: Int
+        character_icon: Any?
     ): Response {
         return try {
             val res = api.agregar(agregarClienteDto = AgregarClienteDto(

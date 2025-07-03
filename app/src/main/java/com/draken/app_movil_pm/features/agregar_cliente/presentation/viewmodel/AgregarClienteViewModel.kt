@@ -1,8 +1,10 @@
 package com.draken.app_movil_pm.features.agregar_cliente.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.draken.app_movil_pm.R
+import com.draken.app_movil_pm.features.agregar_cliente.domain.model.Character_Icon
 import com.draken.app_movil_pm.features.agregar_cliente.domain.model.InputType
 import com.draken.app_movil_pm.features.agregar_cliente.domain.model.Response
 import com.draken.app_movil_pm.features.agregar_cliente.domain.usecase.AgregarClienteUseCase
@@ -27,8 +29,8 @@ class AgregarClienteViewModel(
     private val _emailText = MutableStateFlow("")
     val emailText: StateFlow<String> = _emailText.asStateFlow()
 
-    private val _characterIcon = MutableStateFlow(0)
-    val characterIcon: StateFlow<Int> = _characterIcon.asStateFlow()
+    private val _characterIcon = MutableStateFlow<Character_Icon>(Character_Icon())
+    val characterIcon: StateFlow<Character_Icon> = _characterIcon.asStateFlow()
 
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
@@ -147,8 +149,13 @@ class AgregarClienteViewModel(
         clearErrorOnChangeValue()
     }
 
-    fun onChangeCharacterIcon(icon: Int) {
-        _characterIcon.value = icon
+    fun onChangeCharacterIconNumber(icon: Int) {
+        _characterIcon.value = Character_Icon(character_icon_number = icon)
+        clearErrorOnChangeValue()
+    }
+
+    fun onChangeCharacterIconUri(uri: Uri?) {
+        _characterIcon.value = Character_Icon(character_icon_uri = uri)
         clearErrorOnChangeValue()
     }
 

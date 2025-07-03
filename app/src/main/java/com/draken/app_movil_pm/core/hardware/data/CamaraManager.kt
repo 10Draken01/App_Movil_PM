@@ -1,5 +1,5 @@
 // CamaraManager.kt - Agregar la función faltante
-package com.draken.app_movil_pm.core.hardware.data
+package com.example.projecto.core.hardware.data
 
 import android.content.Context
 import android.content.pm.PackageManager

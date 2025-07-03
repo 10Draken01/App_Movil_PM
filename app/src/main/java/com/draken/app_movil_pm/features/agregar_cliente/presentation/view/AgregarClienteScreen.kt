@@ -101,7 +101,8 @@ fun AgregarClienteScreen(
                 inputs = inputs,
                 icons = icons,
                 characterIcon = characterIcon,
-                onChangeCharacterIcon = viewModel::onChangeCharacterIcon
+                onChangeCharacterIconNumber = viewModel::onChangeCharacterIconNumber,
+                onChangeCharacterIconUri = viewModel::onChangeCharacterIconUri
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -200,7 +201,7 @@ fun AgregarClienteScreen(
                             celular.isNotBlank() &&
                             email.trim().isNotBlank() &&
                             android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches(),
-                    modifier = Modifier.weight(1f) // ← Cada botón ocupa el mismo espacio
+                    modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio
                 )
 
                 FormButtomCustom(
@@ -208,7 +209,9 @@ fun AgregarClienteScreen(
                     loading = loading,
                     onClick = { onNavigateToClientes() },
                     enabled = true,
-                    modifier = Modifier.weight(1f) // ← Cada botón ocupa el mismo espacio
+                    modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio
+                    textColor = Color.White
+                    
                 )
             }
         }

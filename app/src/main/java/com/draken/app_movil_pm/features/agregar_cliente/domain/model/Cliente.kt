@@ -5,5 +5,5 @@ data class Cliente(
     val nombre: String,
     val celular: String,
     val email: String,
-    val character_icon: Int
+    val character_icon: Character_Icon
 )

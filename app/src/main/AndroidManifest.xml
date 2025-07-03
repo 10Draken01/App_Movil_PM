@@ -2,7 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- OBLIGATORIO: Permiso para acceder a internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- OBLIGATORIO: Permiso para usar la cámara -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- OPCIONAL: Para guardar en almacenamiento externo (Android ≤ 10) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!-- OPCIONAL: Para leer archivos existentes -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- DECLARAR HARDWARE: Especifica si la cámara es obligatoria o no -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:networkSecurityConfig="@xml/network_security_config"
@@ -15,6 +31,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_Movil_PM"
         tools:targetApi="31">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

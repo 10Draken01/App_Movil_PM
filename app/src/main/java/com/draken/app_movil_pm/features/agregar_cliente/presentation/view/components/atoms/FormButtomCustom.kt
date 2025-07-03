@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,7 +40,13 @@ fun FormButtomCustom(
     onClick: () -> Unit,
     enabled: Boolean,
     text: String = if (fethButtom) "Guardar" else "Cancelar",
-    modifier: Modifier = Modifier // ← Agregar parámetro modifier
+    modifier: Modifier = Modifier, // ← Agregar parámetro modifier
+    bacgroundColor: Color? = null,
+    textColor: Color? = null,
+    textSize: Int? = null,
+    borderSize: Int? = null,
+    borderColor: Color? = null
+
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "loading")
     val rotationAngle by infiniteTransition.animateFloat(
@@ -55,10 +62,14 @@ fun FormButtomCustom(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (fethButtom) Color.DarkGray else Color.Black,
+            containerColor = bacgroundColor ?: if (fethButtom) Color.DarkGray else Color.Black,
             contentColor = Color.White,
             disabledContainerColor = Color.LightGray,
             disabledContentColor = Color.DarkGray
+        ),
+        border = BorderStroke(
+            color = borderColor ?: Color.Unspecified,
+            width =(borderSize ?: 0).dp
         ),
         shape = RoundedCornerShape(5.dp),
         modifier = modifier // ← Usar el modifier personalizado en lugar de fillMaxWidth()
@@ -87,14 +98,15 @@ fun FormButtomCustom(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Guardando...",
-                    fontSize = 12.sp,
+                    fontSize = (textSize ?: 12).sp,
                     fontFamily = Spooftrial_regular
                 )
             }
         } else {
             Text(
                 text = text,
-                fontSize = 12.sp,
+                fontSize = (textSize ?: 12).sp,
+                color = textColor ?: if(fethButtom) Color.Gray else Color.Unspecified,
                 fontFamily = Spooftrial_bold
             )
         }
