@@ -1,5 +1,7 @@
 package com.draken.app_movil_pm.features.editar_cliente.di
 
+import com.draken.app_movil_pm.core.di.FileManagerModule
+import com.draken.app_movil_pm.core.filemanager.data.FileManager
 import com.draken.app_movil_pm.core.http.RetrofitHelper
 
 import com.draken.app_movil_pm.features.editar_cliente.data.datasource.remote.EditarClienteService
@@ -21,6 +23,9 @@ object EditarClienteModule {
     }
 
     val editarClienteUseCase: EditarClienteUseCase by lazy {
-        EditarClienteUseCase(editarClienteRepository)
+        EditarClienteUseCase(
+            editarClienteRepository,
+            FileManagerModule.fileManagerRepository
+        )
     }
 }

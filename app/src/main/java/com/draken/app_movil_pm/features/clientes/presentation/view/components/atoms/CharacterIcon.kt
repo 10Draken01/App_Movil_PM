@@ -12,9 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.draken.app_movil_pm.core.domain.model.CharacterIcon
 
 @Composable
-fun CharacterIcon(icon: Int) {
+fun CharacterIcon(characterIcon: CharacterIcon) {
     Surface(
         shape = CircleShape,
         color = Color.Black,
@@ -25,7 +26,7 @@ fun CharacterIcon(icon: Int) {
             modifier = Modifier.fillMaxSize()
         ) {
             Icon(
-                painter = painterResource(id = icon),
+                painter = painterResource(id = characterIcon.characterIconNumber),
                 contentDescription = "Profile",
                 tint = Color.Unspecified,
                 modifier = Modifier.size(30.dp)

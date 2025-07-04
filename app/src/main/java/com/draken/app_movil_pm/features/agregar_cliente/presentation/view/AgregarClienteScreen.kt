@@ -1,5 +1,11 @@
 package com.draken.app_movil_pm.features.agregar_cliente.presentation.view
 
+import android.Manifest
+import android.net.Uri
+import android.util.Log
+import android.util.Patterns
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
@@ -27,10 +33,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import com.draken.app_movil_pm.core.di.AppFolderModule
+import com.draken.app_movil_pm.core.di.HardwareModule
 import com.draken.app_movil_pm.features.agregar_cliente.di.AgregarClienteModule
-import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.atoms.FormButtomCustom
-import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.molecules.Form
+import com.draken.app_movil_pm.core.components.atoms.FormButtomCustom
+import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.molecules.FormAgregarCliente
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.viewmodel.AgregarClienteViewModel
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.viewmodel.AgregarClienteViewModelFactory
 import kotlinx.coroutines.delay
@@ -38,15 +49,24 @@ import kotlinx.coroutines.delay
 @Composable
 fun AgregarClienteScreen(
     viewModel: AgregarClienteViewModel = viewModel(
-        factory = AgregarClienteViewModelFactory (AgregarClienteModule.agregarClienteUseCase)
+        factory = AgregarClienteViewModelFactory(
+            agregarClienteUseCase = AgregarClienteModule.agregarClienteUseCase,
+            cameraManagerRepository = HardwareModule.cameraRepository,
+            publicAppFolderManagerRepository = AppFolderModule.publicAppFolderManagerRepository
+        )
     ),
     onNavigateToClientes: () -> Unit = {}
 ) {
-    val clave_cliente by viewModel.claveClienteText.collectAsState()
-    val nombre by viewModel.nombreText.collectAsState()
+    var isIcon by remember { mutableStateOf<Boolean>(true) }
+
+    val claveCliente by viewModel.claveCliente.collectAsState()
+    val nombre by viewModel.nombre.collectAsState()
     val celular by viewModel.celularText.collectAsState()
-    val email by viewModel.emailText.collectAsState()
+    val email by viewModel.email.collectAsState()
     val characterIcon by viewModel.characterIcon.collectAsState()
+    val deviceHasCamera by viewModel.deviceHasCamera.collectAsState()
+    val hasCameraPermission by viewModel.hasCameraPermission.collectAsState()
+    var uriTemp by remember { mutableStateOf<Uri?>(null) }
 
     val icons = viewModel.icons
     val inputs = viewModel.inputs
@@ -56,6 +76,29 @@ fun AgregarClienteScreen(
 
     val scrollState = rememberScrollState()
 
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { success ->
+        viewModel.updateHasCameraPermission()
+        if (!success) {
+            isIcon = false
+        }
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        Log.d("Camera", "Resultado de la cámara: $isSuccess")
+
+        if (isSuccess) {
+            Log.d("Camera", "Foto tomada exitosamente.")
+            viewModel.onChangeCharacterIconUri(uriTemp)
+        } else {
+            Log.e("Camera", "Error al tomar la foto o el usuario canceló")
+            // Opcional: Limpiar el URI si falló
+            viewModel.onChangeCharacterIconUri(null)
+        }
+    }
 
     // Efecto para manejar la navegación cuando el login es exitoso
     LaunchedEffect(stateResponse) {
@@ -65,6 +108,7 @@ fun AgregarClienteScreen(
             onNavigateToClientes()
         }
     }
+
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -73,7 +117,7 @@ fun AgregarClienteScreen(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,7 +128,7 @@ fun AgregarClienteScreen(
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(5.dp),
-                    color = Color(0,0,0)
+                    color = Color(0, 0, 0)
                 )
                 .padding(top = 20.dp, end = 20.dp, start = 20.dp, bottom = 20.dp)
         ) {
@@ -97,12 +141,41 @@ fun AgregarClienteScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Form(
+            FormAgregarCliente(
+                isIcon = isIcon,
+                hasCamera = deviceHasCamera,
                 inputs = inputs,
                 icons = icons,
                 characterIcon = characterIcon,
                 onChangeCharacterIconNumber = viewModel::onChangeCharacterIconNumber,
-                onChangeCharacterIconUri = viewModel::onChangeCharacterIconUri
+                onChangeCharacterIconUri = viewModel::onChangeCharacterIconUri,
+                onChangeIsIcon = { t -> isIcon = t },
+                takePhoto = {
+                    Log.d("Camera", "Tomar Foto")
+                    viewModel.hasCamera()
+                    if (deviceHasCamera) {
+                        if (!hasCameraPermission) {
+                            Log.d("Camera", "No hay permiso para tomar foto")
+                            permissionLauncher.launch(Manifest.permission.CAMERA)
+                        } else {
+                            Log.d("Camera", "Si hay permiso para tomar foto")
+                            // SOLUCIÓN: Usar callback para esperar el URI
+                            viewModel.createImageUri { uri ->
+                                uriTemp = uri
+                                if (uri != null) {
+                                    Log.d("Camera", "URI disponible: $uri")
+                                    try {
+                                        cameraLauncher.launch(uri)
+                                    } catch (e: Exception) {
+                                        Log.e("Camera", "Error al lanzar cámara: ${e.message}")
+                                    }
+                                } else {
+                                    Log.e("Camera", "Error: URI es null")
+                                }
+                            }
+                        }
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -193,14 +266,14 @@ fun AgregarClienteScreen(
                     fethButtom = true,
                     loading = loading,
                     onClick = {
-                        viewModel.agregar()
+                        viewModel.agregarCliente()
                     },
                     enabled = !loading &&
-                            clave_cliente.isNotBlank() &&
+                            claveCliente.isNotBlank() &&
                             nombre.isNotBlank() &&
                             celular.isNotBlank() &&
                             email.trim().isNotBlank() &&
-                            android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches(),
+                            Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches(),
                     modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio
                 )
 
@@ -211,7 +284,7 @@ fun AgregarClienteScreen(
                     enabled = true,
                     modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio
                     textColor = Color.White
-                    
+
                 )
             }
         }

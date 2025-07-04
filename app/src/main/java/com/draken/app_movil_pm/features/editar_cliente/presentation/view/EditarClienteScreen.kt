@@ -1,5 +1,10 @@
 package com.draken.app_movil_pm.features.editar_cliente.presentation.view
 
+import android.Manifest
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
@@ -27,27 +32,64 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.atoms.FormButtomCustom
+import com.draken.app_movil_pm.core.components.atoms.FormButtomCustom
+import com.draken.app_movil_pm.core.components.atoms.InputForm
+import com.draken.app_movil_pm.core.di.AppFolderModule
+import com.draken.app_movil_pm.core.di.HardwareModule
 import com.draken.app_movil_pm.features.editar_cliente.di.EditarClienteModule
-import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.atoms.InputForm
-import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.Form
-import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.IconInput
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModel
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModelFactory
 import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
+import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.FormEditarCliente
 import kotlinx.coroutines.delay
 
 @Composable
 fun EditarClienteScreen(
     sharedViewModel: SharedDataViewModel,
     viewModel: EditarClienteViewModel = viewModel(
-        factory = EditarClienteViewModelFactory(EditarClienteModule.editarClienteUseCase)
+        factory = EditarClienteViewModelFactory(
+            editarClienteUseCase = EditarClienteModule.editarClienteUseCase,
+            cameraManagerRepository = HardwareModule.cameraRepository,
+            publicAppFolderManagerRepository = AppFolderModule.publicAppFolderManagerRepository
+        )
     ),
     onNavigateToClientes: () -> Unit = {}
 ) {
+    var isIcon by remember { mutableStateOf<Boolean>(true) }
     // Observar el cliente seleccionado correctamente
     val selectedCliente by sharedViewModel.selectedCliente.collectAsState()
+    val deviceHasCamera by viewModel.deviceHasCamera.collectAsState()
+    val hasCameraPermission by viewModel.hasCameraPermission.collectAsState()
+    var uriTemp by remember { mutableStateOf<Uri?>(null) }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) {
+        succes ->
+        viewModel.updateHasCameraPermission()
+        if(!succes){
+            viewModel.onChangeIsIcon(false)
+        }
+    }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { isSuccess ->
+        Log.d("Camera", "Resultado de la cámara: $isSuccess")
+
+        if (isSuccess) {
+            Log.d("Camera", "Foto tomada exitosamente.")
+            viewModel.onChangeCharacterIconUri(uriTemp)
+        } else {
+            Log.e("Camera", "Error al tomar la foto o el usuario canceló")
+            // Opcional: Limpiar el URI si falló
+            viewModel.onChangeCharacterIconUri(null)
+        }
+    }
 
     // Inicializar el ViewModel cuando se recibe un cliente
     LaunchedEffect(selectedCliente) {
@@ -56,10 +98,10 @@ fun EditarClienteScreen(
         }
     }
 
-    val clave_cliente by viewModel.claveClienteText.collectAsState()
+    val claveCliente by viewModel.claveCliente.collectAsState()
     val nombre by viewModel.nombreText.collectAsState()
-    val celular by viewModel.celularText.collectAsState()
-    val email by viewModel.emailText.collectAsState()
+    val celular by viewModel.celular.collectAsState()
+    val email by viewModel.email.collectAsState()
     val characterIcon by viewModel.characterIcon.collectAsState()
 
     val icons = viewModel.icons
@@ -115,29 +157,49 @@ fun EditarClienteScreen(
             InputForm(
                 label = "Clave Cliente",
                 placeholder = "000000001",
-                value = clave_cliente,
+                value = claveCliente,
                 onValueChange = { },
                 enable = false
             )
 
-            Spacer(modifier = Modifier.height(15.dp))
-            Form(inputs = inputs)
+            Spacer(modifier = Modifier.height(10.dp))
 
-
-            Text(
-                text = "Icono del Cliente",
-                fontSize = 15.sp,
-                color = Color.Black,
-                fontFamily = Spooftrial_regular,
-            )
-
-            IconInput(
+            FormEditarCliente(
+                isIcon = isIcon,
+                hasCamera = deviceHasCamera,
+                inputs = inputs,
                 icons = icons,
                 characterIcon = characterIcon,
-                onChangeCharacterIcon = { viewModel.onChangeCharacterIcon(it) }
+                onChangeCharacterIconNumber = viewModel::onChangeCharacterIconNumber,
+                onChangeCharacterIconUri = viewModel::onChangeCharacterIconUri,
+                onChangeIsIcon = { t -> isIcon = t },
+                takePhoto = {
+                    Log.d("Camera", "Tomar Foto")
+                    viewModel.hasCamera()
+                    if (deviceHasCamera) {
+                        if (!hasCameraPermission) {
+                            Log.d("Camera", "No hay permiso para tomar foto")
+                            permissionLauncher.launch(Manifest.permission.CAMERA)
+                        } else {
+                            Log.d("Camera", "Si hay permiso para tomar foto")
+                            // SOLUCIÓN: Usar callback para esperar el URI
+                            viewModel.createImageUri { uri ->
+                                uriTemp = uri
+                                if (uri != null) {
+                                    Log.d("Camera", "URI disponible: $uri")
+                                    try {
+                                        cameraLauncher.launch(uri)
+                                    } catch (e: Exception) {
+                                        Log.e("Camera", "Error al lanzar cámara: ${e.message}")
+                                    }
+                                } else {
+                                    Log.e("Camera", "Error: URI es null")
+                                }
+                            }
+                        }
+                    }
+                }
             )
-
-            Spacer(modifier = Modifier.height(10.dp))
 
             // Mensajes de error mejorados con animaciones
             AnimatedVisibility(
@@ -223,10 +285,10 @@ fun EditarClienteScreen(
                     fethButtom = true,
                     loading = loading,
                     onClick = {
-                        viewModel.editar()
+                        viewModel.editarCliente()
                     },
                     enabled = !loading &&
-                            clave_cliente.isNotBlank() &&
+                            claveCliente.isNotBlank() &&
                             nombre.isNotBlank() &&
                             celular.isNotBlank() &&
                             email.trim().isNotBlank() &&

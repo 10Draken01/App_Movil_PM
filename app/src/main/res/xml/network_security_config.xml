@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
+        // Casa Ocosingo
+        <domain includeSubdomains="false">192.168.1.80</domain>
 
         <domain includeSubdomains="false">192.168.0.1</domain>
         // celular
-        <domain includeSubdomains="false">172.18.192.1</domain>
+        <domain includeSubdomains="false">10.227.83.145</domain>
         // CASA COMPU
         <domain includeSubdomains="false">192.168.0.24</domain>
     </domain-config>

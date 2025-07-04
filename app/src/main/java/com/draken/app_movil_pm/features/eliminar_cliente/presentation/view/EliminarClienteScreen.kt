@@ -29,8 +29,8 @@ import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.di.EliminarClienteModule
-import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.FormButtomCustom
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.molecules.DataCliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModel
@@ -56,19 +56,19 @@ fun EliminarClienteScreen(
         }
     }
 
-    val clave_cliente by viewModel.claveClienteText.collectAsState()
+    val claveCliente by viewModel.claveClienteText.collectAsState()
     val nombre by viewModel.nombreText.collectAsState()
     val celular by viewModel.celularText.collectAsState()
     val email by viewModel.emailText.collectAsState()
-    val character_icon by viewModel.characterIcon.collectAsState()
+    val characterIcon by viewModel.characterIcon.collectAsState()
 
     val icons = viewModel.icons
     val data = Cliente(
-        clave_cliente = clave_cliente,
+        claveCliente = claveCliente,
         nombre = nombre,
         celular = celular,
         email = email,
-        character_icon = character_icon
+        characterIcon = characterIcon
     )
 
     val stateResponse by viewModel.stateResponse.collectAsState()
@@ -256,7 +256,7 @@ fun EliminarClienteScreen(
                     fethButtom = true,
                     loading = loading,
                     onClick = {
-                        viewModel.eliminar()
+                        viewModel.eliminarCliente()
                     },
                     enabled = !loading,
                     modifier = Modifier.weight(1f)

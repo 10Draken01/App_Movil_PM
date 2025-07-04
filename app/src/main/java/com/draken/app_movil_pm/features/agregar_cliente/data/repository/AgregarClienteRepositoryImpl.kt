@@ -1,27 +1,34 @@
 package com.draken.app_movil_pm.features.agregar_cliente.data.repository
 
+import android.util.Log
 import com.draken.app_movil_pm.features.agregar_cliente.data.datasource.remote.AgregarClienteService
 import com.draken.app_movil_pm.features.agregar_cliente.data.model.AgregarClienteDto
-import com.draken.app_movil_pm.features.agregar_cliente.domain.model.Response
+import com.draken.app_movil_pm.core.domain.model.Response
 import com.draken.app_movil_pm.features.agregar_cliente.domain.repository.AgregarClienteRepository
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.IOException
 
-class AgregarClienteRepositoryImpl(private val api: AgregarClienteService) : AgregarClienteRepository {
-    override suspend fun agregar(
-        clave_cliente: String,
-        nombre: String,
-        celular: String,
-        email: String,
-        character_icon: Any?
+class AgregarClienteRepositoryImpl(
+    private val api: AgregarClienteService,
+) : AgregarClienteRepository {
+    override suspend fun agregarCliente(
+        claveCliente: RequestBody,
+        nombre: RequestBody,
+        celular: RequestBody,
+        email: RequestBody,
+        characterIcon: RequestBody?,
+        image: MultipartBody.Part?
     ): Response {
         return try {
-            val res = api.agregar(agregarClienteDto = AgregarClienteDto(
-                clave_cliente,
-                nombre,
-                celular,
-                email,
-                character_icon
-            ))
+            val res = api.agregarCliente(
+                claveCliente = claveCliente,
+                nombre = nombre,
+                celular = celular,
+                email = email,
+                characterIcon = characterIcon,
+                image = image,
+            )
 
             if (res.isSuccessful && res.body() != null) {
                 val responseDto = res.body()!!
@@ -40,7 +47,8 @@ class AgregarClienteRepositoryImpl(private val api: AgregarClienteService) : Agr
         } catch (e: IOException) {
             Response(error = "Error de red: ${e.localizedMessage}")
         } catch (e: Exception) {
-            Response(error = "Excepción inesperada: ${e.localizedMessage}")
+            Log.e("AgregarCliente", "Error: ${e.localizedMessage}")
+            Response(error = "Excepción inesperada: ${e.message}")
         }
     }
 }

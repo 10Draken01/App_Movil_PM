@@ -2,21 +2,16 @@ package com.draken.app_movil_pm.features.clientes.presentation.view.components.m
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.draken.app_movil_pm.R
-import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.ButtonIconCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.CharacterIcon
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
@@ -60,7 +55,7 @@ fun ClienteCard(
                 .padding(start = 10.dp, top = 10.dp, end = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CharacterIcon(icon = icon)
+            CharacterIcon(characterIcon = cliente.characterIcon)
 
             Spacer(modifier = Modifier.width(10.dp))
 

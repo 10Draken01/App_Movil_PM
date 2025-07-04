@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.draken.app_movil_pm.R
-import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.ButtonIconCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.InputNumberPage
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold

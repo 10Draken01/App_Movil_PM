@@ -1,47 +1,51 @@
 package com.draken.app_movil_pm.features.editar_cliente.data.repository
 
-import com.draken.app_movil_pm.features.editar_cliente.domain.model.Response
+import com.draken.app_movil_pm.core.domain.model.Response
 import com.draken.app_movil_pm.features.editar_cliente.data.datasource.remote.EditarClienteService
-import com.draken.app_movil_pm.features.editar_cliente.data.model.EditarClienteDto
 import com.draken.app_movil_pm.features.editar_cliente.domain.repository.EditarClienteRepository
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.IOException
 
 class EditarClienteRepositoryImpl(private val api: EditarClienteService) : EditarClienteRepository {
-    override suspend fun editar(
-        clave_cliente: String,
-        nombre: String,
-        celular: String,
-        email: String,
-        character_icon: Int
-    ): Response {
+    override suspend fun editarCliente(
+        claveCliente: String,
+        nombre: RequestBody,
+        celular: RequestBody,
+        email: RequestBody,
+        characterIcon: RequestBody?,
+        image: MultipartBody.Part?
+    ): Result<Response> {
         return try {
-            val res = api.editar(
-                clave_cliente = clave_cliente,
-                editarClienteDto = EditarClienteDto(
-                nombre,
-                celular,
-                email,
-                character_icon
-            ))
+            val res = api.editarCliente(
+                claveCliente = claveCliente,
+                nombre = nombre,
+                celular = celular,
+                email = email,
+                characterIcon = characterIcon,
+                image = image
+            )
 
             if (res.isSuccessful && res.body() != null) {
                 val responseDto = res.body()!!
                 // Convertir DTO a modelo de dominio
-                responseDto.toDomain()
+                Result.success(responseDto.toDomain())
             } else {
                 // Manejo específico de códigos de error HTTP
-                when (res.code()) {
-                    401 -> Response( error = "Error al editar $nombre")
-                    400 -> Response( error = "Error al editar $nombre")
-                    404 -> Response( error = "Cuenta todavia no esta registrada")
-                    500 -> Response( error = "Error interno del servidor")
-                    else -> Response( error = "Error en la petición: ${res.code()}")
+                val error = when (res.code()) {
+                    401 -> "Error al editar $nombre"
+                    400 -> "Error al editar $nombre"
+                    404 -> "Cuenta todavia no esta registrada"
+                    500 -> "Error interno del servidor"
+                    else -> "Error en la petición: ${res.code()}"
                 }
+                Result.success(Response(error = error))
             }
         } catch (e: IOException) {
-            Response(error = "Error de red: ${e.localizedMessage}")
+            Result.failure(Throwable(message = "Error de red: ${e.localizedMessage}"))
         } catch (e: Exception) {
-            Response(error = "Excepción inesperada: ${e.localizedMessage}")
+            Result.failure(Throwable(message = "Excepción inesperada: ${e.localizedMessage}"))
+
         }
     }
 }

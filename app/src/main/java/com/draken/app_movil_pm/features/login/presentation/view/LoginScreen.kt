@@ -1,5 +1,6 @@
 package com.draken.app_movil_pm.features.login.presentation.view
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
@@ -76,6 +77,7 @@ fun LoginScreen(
 
     // Efecto para manejar la navegación cuando el login es exitoso
     LaunchedEffect(stateResponse) {
+        Log.d("toClientes", "${stateResponse.error.isNullOrEmpty() } _ ${ !stateResponse.message.isNullOrEmpty()}")
         if (!loading && stateResponse.error.isNullOrEmpty() && !stateResponse.message.isNullOrEmpty()) {
             // Login exitoso, esperar 1 segundo y navegar
             delay(1000L)

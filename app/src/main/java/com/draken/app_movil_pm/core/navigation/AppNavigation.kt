@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.AgregarClienteScreen
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.EditarClienteScreen
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.EliminarClienteScreen
-import com.draken.app_movil_pm.features.login.presentation.view.ClientesScreen
+import com.draken.app_movil_pm.features.clientes.presentation.view.ClientesScreen
 import com.draken.app_movil_pm.features.login.presentation.view.LoginScreen
 import com.draken.app_movil_pm.features.register.presentation.view.RegisterScreen
 

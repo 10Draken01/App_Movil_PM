@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.features.login.presentation.view
+package com.draken.app_movil_pm.features.clientes.presentation.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,8 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.di.ClientesModule
-import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.TopBarCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ClienteCard
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ControlesPaginas
@@ -46,7 +46,6 @@ fun ClientesScreen(
     var currentPage by remember { mutableIntStateOf(1) }
     var currentSubPage by remember { mutableIntStateOf(1) }
     var pageInputText by remember { mutableStateOf("") }
-    val useData = viewModel.useData
 
     val searchText by viewModel.searchText.collectAsState()
     val scrollState = rememberScrollState()
@@ -195,7 +194,7 @@ fun ClientesScreen(
                                 onEditClick = {
                                     onNavigateToEditarCliente(cliente)
                                 },
-                                icon = icons[cliente.characterIcon]
+                                icon = icons[cliente.characterIcon.characterIconNumber]
                             )
                         }
                     }

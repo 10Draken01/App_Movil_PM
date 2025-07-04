@@ -2,13 +2,21 @@ package com.draken.app_movil_pm.features.agregar_cliente.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.draken.app_movil_pm.core.hardware.data.CameraManager
+import com.draken.app_movil_pm.core.hardware.domain.CameraManagerRepository
+import com.draken.app_movil_pm.core.public_app_folder_manager.data.PublicAppFolderManager
+import com.draken.app_movil_pm.core.public_app_folder_manager.domain.repository.PublicAppFolderManagerRepository
 import com.draken.app_movil_pm.features.agregar_cliente.domain.usecase.AgregarClienteUseCase
-import com.draken.app_movil_pm.features.login.domain.usecase.LoginUseCase
-
 class AgregarClienteViewModelFactory(
-    private val useCase: AgregarClienteUseCase
+    private val agregarClienteUseCase: AgregarClienteUseCase,
+    private val cameraManagerRepository: CameraManagerRepository,
+    private val publicAppFolderManagerRepository: PublicAppFolderManagerRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return AgregarClienteViewModel(useCase) as T
+        return AgregarClienteViewModel(
+            agregarClienteUseCase,
+            cameraManagerRepository,
+            publicAppFolderManagerRepository
+        ) as T
     }
 }

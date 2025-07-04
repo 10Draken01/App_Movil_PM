@@ -11,7 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.Cliente
+import com.draken.app_movil_pm.core.components.atoms.ImageCircleComponent
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.CharacterIcon
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.InputForm
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
@@ -26,7 +27,7 @@ fun DataCliente( cliente: Cliente, icons: List<Int>){
         fontFamily = Spooftrial_bold,
     )
     Text(
-        text = cliente.clave_cliente,
+        text = cliente.claveCliente,
         color = Color.Black,
         fontSize = 12.sp,
         fontFamily = Spooftrial_regular
@@ -92,6 +93,14 @@ fun DataCliente( cliente: Cliente, icons: List<Int>){
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ){
-        CharacterIcon(icon = icons[cliente.character_icon])
+        if(cliente.characterIcon.characterIconUrl != null){
+            ImageCircleComponent(
+                imageUrl = cliente.characterIcon.characterIconUrl.url,
+                onDeleteClick = {},
+                justPreview = true
+            )
+        } else {
+            CharacterIcon(icon = icons[cliente.characterIcon.characterIconNumber])
+        }
     }
 }

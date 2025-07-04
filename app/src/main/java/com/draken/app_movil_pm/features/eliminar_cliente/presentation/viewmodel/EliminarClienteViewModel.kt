@@ -1,9 +1,11 @@
 package com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.draken.app_movil_pm.R
-import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.Cliente
+import com.draken.app_movil_pm.core.domain.model.CharacterIcon
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.InputType
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.model.Response
 import com.draken.app_movil_pm.features.eliminar_cliente.domain.usecase.EliminarClienteUseCase
@@ -16,28 +18,28 @@ class EliminarClienteViewModel(
     private val eliminarClienteUseCase: EliminarClienteUseCase
 ) : ViewModel() {
 
-    private val _claveClienteText = MutableStateFlow("")
+    private val _claveClienteText = MutableStateFlow<String>("")
     val claveClienteText: StateFlow<String> = _claveClienteText.asStateFlow()
 
-    private val _nombreText = MutableStateFlow("")
+    private val _nombreText = MutableStateFlow<String>("")
     val nombreText: StateFlow<String> = _nombreText.asStateFlow()
 
-    private val _celularText = MutableStateFlow("")
+    private val _celularText = MutableStateFlow<String>("")
     val celularText: StateFlow<String> = _celularText.asStateFlow()
 
-    private val _emailText = MutableStateFlow("")
+    private val _emailText = MutableStateFlow<String>("")
     val emailText: StateFlow<String> = _emailText.asStateFlow()
 
-    private val _characterIcon = MutableStateFlow(0)
-    val characterIcon: StateFlow<Int> = _characterIcon.asStateFlow()
+    private val _characterIcon = MutableStateFlow<CharacterIcon>(CharacterIcon())
+    val characterIcon: StateFlow<CharacterIcon> = _characterIcon.asStateFlow()
 
-    private val _loading = MutableStateFlow(false)
+    private val _loading = MutableStateFlow<Boolean>(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-    private val _stateResponse = MutableStateFlow(Response())
+    private val _stateResponse = MutableStateFlow<Response>(Response())
     val stateResponse: StateFlow<Response> = _stateResponse.asStateFlow()
 
-    fun setCliente(cliente: com.draken.app_movil_pm.features.clientes.domain.model.Cliente){
+    fun setCliente(cliente: Cliente){
         _claveClienteText.value = cliente.claveCliente
         _nombreText.value = cliente.nombre
         _celularText.value = cliente.celular
@@ -58,17 +60,7 @@ class EliminarClienteViewModel(
         R.drawable.portafolio
     )
 
-    fun getAllData(): Cliente{
-        return Cliente(
-            clave_cliente = _claveClienteText.value,
-            nombre = _nombreText.value,
-            celular = _celularText.value,
-            email = _emailText.value,
-            character_icon = _characterIcon.value
-        )
-    }
-
-    fun eliminar(){
+    fun eliminarCliente(){
         // Limpiar error anterior
         _stateResponse.value = Response()
 
@@ -87,8 +79,7 @@ class EliminarClienteViewModel(
                 _loading.value = true
 
                 val result: Response = eliminarClienteUseCase(
-                    _claveClienteText.value.trim(),
-                    _nombreText.value
+                    _claveClienteText.value.trim()
                 )
 
                 if( result.error.isNullOrEmpty()){
@@ -97,6 +88,7 @@ class EliminarClienteViewModel(
                     _stateResponse.value = result
                 }
             } catch (e: Exception) {
+                Log.e("EliminarCliente", "Error: ${e.message}")
                 _stateResponse.value = Response(error = "Error de conexión. Inténtalo de nuevo.")
             } finally {
                 _loading.value = false
@@ -113,41 +105,5 @@ class EliminarClienteViewModel(
 
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
-    }
-
-    fun onChangeClaveClienteText(text: String) {
-        _claveClienteText.value = text
-        clearErrorOnChangeValue()
-    }
-
-    fun onChangeNombreText(text: String) {
-        _nombreText.value = text
-        clearErrorOnChangeValue()
-    }
-
-    fun onChangeCelularText(text: String) {
-        _celularText.value = text
-        clearErrorOnChangeValue()
-    }
-
-    fun onChangeEmailText(text: String) {
-        _emailText.value = text
-        clearErrorOnChangeValue()
-    }
-
-    fun onChangeCharacterIcon(icon: Int) {
-        _characterIcon.value = icon
-        clearErrorOnChangeValue()
-    }
-
-    fun clearErrorOnChangeValue(){
-        // Limpiar error cuando el usuario empiece a escribir
-        if (_stateResponse.value.error != null) {
-            _stateResponse.value = Response()
-        }
-    }
-
-    fun clearError() {
-        _stateResponse.value = Response()
     }
 }

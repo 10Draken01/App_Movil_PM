@@ -1,12 +1,15 @@
 package com.draken.app_movil_pm.features.agregar_cliente.data.model
 
-import com.draken.app_movil_pm.features.agregar_cliente.domain.model.Character_Icon
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Part
 
 
 data class AgregarClienteDto(
-    val clave_cliente: String,
-    val nombre: String,
-    val celular: String,
-    val email: String,
-    val character_icon: Any?
+    @Part("claveCliente") val claveCliente: RequestBody,
+    @Part("nombre") val nombre: RequestBody,
+    @Part("celular") val celular: RequestBody,
+    @Part("email") val email: RequestBody,
+    @Part("characterIcon") val characterIcon: RequestBody?,
+    @Part val image: MultipartBody.Part?
 )

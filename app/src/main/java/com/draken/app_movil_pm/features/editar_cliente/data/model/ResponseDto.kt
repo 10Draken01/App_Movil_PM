@@ -1,6 +1,6 @@
 package com.draken.app_movil_pm.features.editar_cliente.data.model
 
-import com.draken.app_movil_pm.features.editar_cliente.domain.model.Response
+import com.draken.app_movil_pm.core.domain.model.Response
 
 data class ResponseDto(
     val message: String? = null,

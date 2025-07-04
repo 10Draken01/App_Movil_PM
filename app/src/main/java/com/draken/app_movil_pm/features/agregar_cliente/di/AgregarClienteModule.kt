@@ -1,5 +1,6 @@
 package com.draken.app_movil_pm.features.agregar_cliente.di
 
+import com.draken.app_movil_pm.core.di.FileManagerModule
 import com.draken.app_movil_pm.core.http.RetrofitHelper
 import com.draken.app_movil_pm.features.agregar_cliente.data.datasource.remote.AgregarClienteService
 import com.draken.app_movil_pm.features.agregar_cliente.data.repository.AgregarClienteRepositoryImpl
@@ -10,6 +11,7 @@ object AgregarClienteModule {
     init {
         RetrofitHelper.init()
     }
+
     private val agregarClienteService: AgregarClienteService by lazy {
         RetrofitHelper.getService(AgregarClienteService::class.java)
     }
@@ -19,6 +21,9 @@ object AgregarClienteModule {
     }
 
     val agregarClienteUseCase: AgregarClienteUseCase by lazy {
-        AgregarClienteUseCase(agregarClienteRepository)
+        AgregarClienteUseCase(
+            agregarClienteRepository,
+            FileManagerModule.fileManagerRepository
+        )
     }
 }

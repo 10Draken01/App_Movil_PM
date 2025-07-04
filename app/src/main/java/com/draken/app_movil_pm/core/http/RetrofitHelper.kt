@@ -11,8 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
+
+    // Casa Ocosingo 192.168.1.80
     // CASA COMPU 192.168.0.24
-    private const val BASE_URL = "http://192.168.0.24:8000/api/"
+    private const val BASE_URL = "http://10.227.83.145:8000/api/"
     private const val TIMEOUT = 20L
 
     private var retrofit: Retrofit? = null

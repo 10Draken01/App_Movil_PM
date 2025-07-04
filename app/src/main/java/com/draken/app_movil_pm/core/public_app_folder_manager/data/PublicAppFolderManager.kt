@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -17,7 +18,11 @@ import com.draken.app_movil_pm.core.public_app_folder_manager.domain.model.AppIm
 import com.draken.app_movil_pm.core.public_app_folder_manager.domain.repository.PublicAppFolderManagerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 
 
@@ -34,45 +39,68 @@ class PublicAppFolderManager(private val context: Context): PublicAppFolderManag
     }
 
     // 🎯 METODO PRINCIPAL: Crear URI directo en carpeta de la app
-    override fun createAppFolderUri(
+    override fun createImageUri(
         fileName: String,
         subfolder: String?
     ): Uri? {
+        val fileName = "IMG_${System.currentTimeMillis()}.jpg"
+        val relativePath = "${Environment.DIRECTORY_PICTURES}/$APP_FOLDER_NAME"
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            createAppFolderUriModern(fileName, subfolder)
-        } else {
-            createAppFolderUriLegacy(fileName, subfolder)
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, relativePath)
+            // ✅ NO pongas IS_PENDING aquí si usas TakePicture()
+            // put(MediaStore.Images.Media.IS_PENDING, 1)
         }
-    }
 
-    // 🎯 FINALIZAR IMAGEN: Marcar como completada
-    override fun finalizeImage(uri: Uri): Boolean {
         return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // Marcar como completada (ya no está pendiente)
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.Images.Media.IS_PENDING, 0)
-                }
-                context.contentResolver.update(uri, contentValues, null, null)
-                true
+            val uri = context.contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
+
+            // ✅ VERIFICAR que el archivo se creó correctamente
+            if (uri != null && verifyUriWritable(uri)) {
+                Log.d("Camera", "URI creada correctamente: $uri")
+                uri
             } else {
-                // Notificar al scanner para que aparezca en galería
-                val path = uri.path
-                if (path != null) {
-                    MediaScannerConnection.scanFile(
-                        context,
-                        arrayOf(path),
-                        arrayOf("image/jpeg"),
-                        null
-                    )
-                }
-                true
+                Log.e("Camera", "URI no es escribible")
+                null
             }
         } catch (e: Exception) {
-            false
+            Log.e("Camera", "Error creando URI: ${e.message}", e)
+            null
         }
     }
+
+        // 🎯 FINALIZAR IMAGEN: Marcar como completada
+        override fun finalizeImage(uri: Uri): Boolean {
+            return try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    // Marcar como completada (ya no está pendiente)
+                    val contentValues = ContentValues().apply {
+                        put(MediaStore.Images.Media.IS_PENDING, 0)
+                    }
+                    context.contentResolver.update(uri, contentValues, null, null)
+                    true
+                } else {
+                    // Notificar al scanner para que aparezca en galería
+                    val path = uri.path
+                    if (path != null) {
+                        MediaScannerConnection.scanFile(
+                            context,
+                            arrayOf(path),
+                            arrayOf("image/jpeg"),
+                            null
+                        )
+                    }
+                    true
+                }
+            } catch (e: Exception) {
+                false
+            }
+        }
 
     // 📋 OBTENER LISTA DE IMÁGENES DE LA APP
     override suspend fun getAppImages(): List<AppImage> = withContext(Dispatchers.IO) {
@@ -186,11 +214,22 @@ class PublicAppFolderManager(private val context: Context): PublicAppFolderManag
         }
 
         return try {
-            context.contentResolver.insert(
+            val uri = context.contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 contentValues
             )
+
+            // ✅ CRUCIAL: Crear el archivo físico vacío
+            if (uri != null) {
+                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    // Crear archivo vacío
+                    outputStream.flush()
+                }
+            }
+
+            uri
         } catch (e: Exception) {
+            android.util.Log.e("PublicAppFolderManager", "Error creando URI moderno: ${e.message}", e)
             null
         }
     }
@@ -198,6 +237,7 @@ class PublicAppFolderManager(private val context: Context): PublicAppFolderManag
     // 📱 ANDROID 9- (API 28-) - Usando File directo
     private fun createAppFolderUriLegacy(fileName: String, subfolder: String?): Uri? {
         if (!hasWritePermission()) {
+            android.util.Log.e("PublicAppFolderManager", "No hay permisos de escritura")
             return null
         }
 
@@ -211,17 +251,28 @@ class PublicAppFolderManager(private val context: Context): PublicAppFolderManag
 
             // Crear directorio si no existe
             if (!appDir.exists()) {
-                appDir.mkdirs()
+                val created = appDir.mkdirs()
+                android.util.Log.d("PublicAppFolderManager", "Directorio creado: $created - ${appDir.absolutePath}")
             }
 
             val file = File(appDir, fileName)
 
-            FileProvider.getUriForFile(
+            // ✅ CRUCIAL: Crear el archivo físico vacío
+            if (!file.exists()) {
+                val created = file.createNewFile()
+                android.util.Log.d("PublicAppFolderManager", "Archivo creado: $created - ${file.absolutePath}")
+            }
+
+            val uri = FileProvider.getUriForFile(
                 context,
                 "${context.packageName}.fileprovider",
                 file
             )
+
+            android.util.Log.d("PublicAppFolderManager", "URI legacy creado: $uri")
+            uri
         } catch (e: Exception) {
+            android.util.Log.e("PublicAppFolderManager", "Error creando URI legacy: ${e.message}", e)
             null
         }
     }
@@ -235,6 +286,19 @@ class PublicAppFolderManager(private val context: Context): PublicAppFolderManag
                 context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    // ✅ VERIFICAR QUE LA URI ES ESCRIBIBLE
+    private fun verifyUriWritable(uri: Uri): Boolean {
+        return try {
+            context.contentResolver.openOutputStream(uri)?.use {
+                // Solo verificar que se puede abrir para escritura
+                true
+            } ?: false
+        } catch (e: Exception) {
+            Log.e("Camera", "URI no escribible: ${e.message}")
+            false
         }
     }
 }

@@ -15,14 +15,6 @@ class CameraManager(private val context: Context): CameraManagerRepository {
         const val CAMERA_PERMISSION = android.Manifest.permission.CAMERA
     }
 
-    private fun getUriForFile(file: File): Uri {
-        return FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.fileprovider",
-            file
-        )
-    }
-
     override suspend fun hasCamera(): Boolean {
         return context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)
     }
@@ -32,14 +24,5 @@ class CameraManager(private val context: Context): CameraManagerRepository {
             context,
             CAMERA_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override suspend fun createUriImage(filename: String): Uri? {
-        return try {
-            val file = createImageFile(filename)
-            getUriForFile(file)
-        } catch (e: IOException) {
-            null
-        }
     }
 }

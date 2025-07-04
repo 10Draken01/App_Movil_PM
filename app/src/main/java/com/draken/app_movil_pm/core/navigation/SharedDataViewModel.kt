@@ -2,7 +2,7 @@
 package com.draken.app_movil_pm.core.navigation
 
 import androidx.lifecycle.ViewModel
-import com.draken.app_movil_pm.features.clientes.domain.model.Cliente
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

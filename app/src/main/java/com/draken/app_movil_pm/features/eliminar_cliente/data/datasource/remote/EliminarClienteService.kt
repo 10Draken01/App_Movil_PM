@@ -6,6 +6,6 @@ import retrofit2.http.DELETE
 import retrofit2.http.Path
 
 interface EliminarClienteService {
-    @DELETE("clientes/{clave_cliente}")
-    suspend fun eliminar(@Path("clave_cliente") clave_cliente : String): Response<ResponseDto>
+    @DELETE("clientes/{claveCliente}")
+    suspend fun eliminarCliente(@Path("claveCliente") claveCliente : String): Response<ResponseDto>
 }
