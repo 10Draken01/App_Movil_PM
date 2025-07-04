@@ -1,4 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-files-path name="my_images" path="Pictures" />
+<paths>
+
+    <!-- Archivos externos privados de la aplicación -->
+    <external-files-path
+        name="my_images"
+        path="Pictures" />
+
+    <!-- Cache externo -->
+    <external-cache-path
+        name="my_cache"
+        path="." />
+
+    <!-- Directorio público de Pictures para Android 9- -->
+    <external-path
+        name="public_pictures"
+        path="Pictures" />
+
+    <!-- Directorio público de Pictures con subcarpeta de la app -->
+    <external-path
+        name="public_app_pictures"
+        path="Pictures/MiApp" />
+
+    <!-- Archivos internos -->
+    <files-path
+        name="my_files"
+        path="." />
+
+    <!-- Cache interno -->
+    <cache-path
+        name="my_internal_cache"
+        path="." />
 </paths>

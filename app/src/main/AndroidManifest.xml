@@ -13,7 +13,8 @@
         android:maxSdkVersion="28" />
 
     <!-- OPCIONAL: Para leer archivos existentes -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <!-- DECLARAR HARDWARE: Especifica si la cámara es obligatoria o no -->
     <uses-feature
@@ -45,7 +46,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.App_Movil_PM">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
