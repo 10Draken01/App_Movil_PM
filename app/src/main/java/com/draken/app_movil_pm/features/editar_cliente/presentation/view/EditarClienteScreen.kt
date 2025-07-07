@@ -59,11 +59,11 @@ fun EditarClienteScreen(
     ),
     onNavigateToClientes: () -> Unit = {}
 ) {
-    var isIcon by remember { mutableStateOf<Boolean>(true) }
     // Observar el cliente seleccionado correctamente
     val selectedCliente by sharedViewModel.selectedCliente.collectAsState()
     val deviceHasCamera by viewModel.deviceHasCamera.collectAsState()
     val hasCameraPermission by viewModel.hasCameraPermission.collectAsState()
+    val isIcon by viewModel.isIcon.collectAsState()
     var uriTemp by remember { mutableStateOf<Uri?>(null) }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -172,7 +172,7 @@ fun EditarClienteScreen(
                 characterIcon = characterIcon,
                 onChangeCharacterIconNumber = viewModel::onChangeCharacterIconNumber,
                 onChangeCharacterIconUri = viewModel::onChangeCharacterIconUri,
-                onChangeIsIcon = { t -> isIcon = t },
+                onChangeIsIcon = { t -> viewModel.onChangeIsIcon(t) },
                 takePhoto = {
                     Log.d("Camera", "Tomar Foto")
                     viewModel.hasCamera()

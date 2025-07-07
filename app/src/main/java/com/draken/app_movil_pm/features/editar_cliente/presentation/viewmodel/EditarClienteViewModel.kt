@@ -70,6 +70,9 @@ class EditarClienteViewModel(
         _celular.value = cliente.celular
         _email.value = cliente.email
         _characterIcon.value = cliente.characterIcon
+        if(cliente.characterIcon.characterIconUrl != null){
+            _isIcon.value = false
+        }
     }
 
     var icons: List<Int> = listOf(

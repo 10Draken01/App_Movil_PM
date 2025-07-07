@@ -81,7 +81,13 @@ fun FormEditarCliente(
             onChangeCharacterIcon = onChangeCharacterIconNumber
         )
     } else {
-        if( characterIcon.characterIconUri == null ) {
+        if( characterIcon.characterIconUrl != null || characterIcon.characterIconUri != null) {
+            ImageCircleComponent(
+                imageUrl = characterIcon.characterIconUrl?.url,
+                imageUri = characterIcon.characterIconUri,
+                onDeleteClick = { onChangeCharacterIconUri(null) }
+            )
+        } else {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -129,11 +135,6 @@ fun FormEditarCliente(
                     borderColor = Color.Black
                 )
             }
-        } else {
-            ImageCircleComponent(
-                imageUri = characterIcon.characterIconUri,
-                onDeleteClick = { onChangeCharacterIconUri(null) }
-            )
         }
     }
 }
