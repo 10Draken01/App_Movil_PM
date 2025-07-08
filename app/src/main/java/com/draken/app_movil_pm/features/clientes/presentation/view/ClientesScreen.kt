@@ -193,8 +193,7 @@ fun ClientesScreen(
                                 },
                                 onEditClick = {
                                     onNavigateToEditarCliente(cliente)
-                                },
-                                icon = icons[cliente.characterIcon.characterIconNumber]
+                                }
                             )
                         }
                     }

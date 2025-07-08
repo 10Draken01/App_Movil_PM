@@ -8,6 +8,6 @@ data class Cliente(
     val celular: String,
     val email: String,
     val characterIcon: CharacterIcon,
-    val createdAt: Date? = null,
-    val updatedAt: Date? = null
+    val createdAt: String? = null,
+    val updatedAt: String? = null
 )

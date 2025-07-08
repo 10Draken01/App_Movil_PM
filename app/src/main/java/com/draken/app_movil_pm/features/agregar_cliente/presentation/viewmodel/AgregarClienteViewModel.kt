@@ -30,7 +30,7 @@ class AgregarClienteViewModel(
     private val _celular = MutableStateFlow<String>("")
     val celularText: StateFlow<String> = _celular.asStateFlow()
 
-    private val _email = MutableStateFlow<String>("")
+    private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email.asStateFlow()
 
     private val _characterIcon = MutableStateFlow<CharacterIcon>(CharacterIcon())

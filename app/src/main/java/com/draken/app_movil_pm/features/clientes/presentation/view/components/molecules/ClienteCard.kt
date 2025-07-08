@@ -1,161 +1,95 @@
 package com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.draken.app_movil_pm.R
 import com.draken.app_movil_pm.core.domain.model.Cliente
-import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.ButtonIconCustom
-import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.CharacterIcon
-import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
-import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 
+// Constantes para mantener consistencia en el diseño
+private val CARD_PADDING = 6.dp
+private val CARD_ELEVATION = 2.dp
+private val CARD_CORNER_RADIUS = 8.dp
+private const val ANIMATION_DURATION = 300
 @Composable
 fun ClienteCard(
     cliente: Cliente,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    icon: Int
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = modifier
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(CARD_PADDING)
+            .clickable(
+                onClickLabel = if (isExpanded) "Contraer información" else "Expandir información"
+            ) {
+                isExpanded = !isExpanded
+            }
+            .semantics {
+                contentDescription = "Tarjeta del cliente ${cliente.nombre}. " +
+                        if (isExpanded) "Expandida" else "Contraída"
+            }
             .border(
                 width = 1.dp,
                 color = Color.LightGray,
-                shape = RoundedCornerShape(5.dp)
-            )
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(5.dp)
-            )
+                shape = RoundedCornerShape(CARD_CORNER_RADIUS)
+            ),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = CARD_ELEVATION
+        ),
+        shape = RoundedCornerShape(CARD_CORNER_RADIUS)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 10.dp, top = 10.dp, end = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            CharacterIcon(characterIcon = cliente.characterIcon)
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = cliente.nombre,
-                    fontFamily = Spooftrial_bold,
-                    fontSize = 15.sp,
-                    color = Color.Black,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    lineHeight = 15.sp
-                )
-
-                Spacer(modifier = Modifier.height(2.dp))
-
-                Column {
-                    Text(
-                        text = "Clave:",
-                        fontFamily = Spooftrial_regular,
-                        fontSize = 10.sp,
-                        color = Color.Gray,
-                        lineHeight = 14.sp
-                    )
-                    Text(
-                        text = cliente.claveCliente,
-                        fontFamily = Spooftrial_regular,
-                        fontSize = 10.sp,
-                        color = Color.Gray,
-                        lineHeight = 14.sp,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.width(10.dp))
-
-            ButtonIconCustom(
-                icon = painterResource(id = R.drawable.boton_editar),
-                contentDescription = "Editar Cliente",
-                color = Color.DarkGray,
-                sizeIcon = 20.dp,
-                onClick = onEditClick
+        Column {
+            // Header de la tarjeta
+            ClienteCardHeader(
+                cliente = cliente,
+                isExpanded = isExpanded,
+                onEditClick = onEditClick,
+                onDeleteClick = onDeleteClick
             )
 
-            Spacer(modifier = Modifier.width(10.dp))
-
-            ButtonIconCustom(
-                icon = painterResource(id = R.drawable.borrar),
-                contentDescription = "Eliminar Cliente",
-                color = Color.Black,
-                sizeIcon = 20.dp,
-                onClick = onDeleteClick
-            )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 15.dp, end = 10.dp, bottom = 6.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            // Contenido expandible con animación
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = expandVertically(
+                    animationSpec = tween(ANIMATION_DURATION)
+                ) + fadeIn(
+                    animationSpec = tween(ANIMATION_DURATION)
+                ),
+                exit = shrinkVertically(
+                    animationSpec = tween(ANIMATION_DURATION)
+                ) + fadeOut(
+                    animationSpec = tween(ANIMATION_DURATION)
+                )
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.llamar),
-                    contentDescription = "Teléfono",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = cliente.celular,
-                    fontFamily = Spooftrial_regular,
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.correo_electronico),
-                    contentDescription = "Email",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = cliente.email,
-                    fontFamily = Spooftrial_regular,
-                    color = Color.Gray,
-                    fontSize = 12.sp,
-                    modifier = Modifier.weight(1f)
-                )
+                ClienteExpandedContent(cliente = cliente)
             }
         }
     }

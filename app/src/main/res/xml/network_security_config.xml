@@ -8,6 +8,6 @@
         // celular
         <domain includeSubdomains="false">10.227.83.145</domain>
         // CASA COMPU
-        <domain includeSubdomains="false">192.168.0.24</domain>
+        <domain includeSubdomains="false">192.168.0.21</domain>
     </domain-config>
 </network-security-config>

@@ -19,7 +19,7 @@ import com.draken.app_movil_pm.core.domain.model.InputType
 import com.draken.app_movil_pm.core.components.atoms.CustomToggleSwitch
 import com.draken.app_movil_pm.core.components.molecules.IconInput
 import com.draken.app_movil_pm.core.components.atoms.FormButtomCustom
-import com.draken.app_movil_pm.core.components.atoms.ImageCircleComponent
+import com.draken.app_movil_pm.core.components.molecules.ImageCircleComponent
 import com.draken.app_movil_pm.core.components.atoms.InputForm
 import com.draken.app_movil_pm.core.components.atoms.SeparatorClasic
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold

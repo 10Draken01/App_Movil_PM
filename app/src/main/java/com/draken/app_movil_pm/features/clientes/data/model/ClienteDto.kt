@@ -11,7 +11,9 @@ data class ClienteDto(
     val nombre: String,
     val celular: String,
     val email: String,
-    val characterIcon: Any
+    val characterIcon: Any,
+    val createdAt: String,
+    val updatedAt: String
 ) {
     fun toDomain(): Cliente {
         val characterIconDomain = when (// Caso 1: Es un número (Int o Double)
@@ -56,7 +58,9 @@ data class ClienteDto(
             nombre = nombre,
             celular = celular,
             email = email,
-            characterIcon = characterIconDomain
+            characterIcon = characterIconDomain,
+            createdAt = createdAt,
+            updatedAt = updatedAt
         )
     }
 }

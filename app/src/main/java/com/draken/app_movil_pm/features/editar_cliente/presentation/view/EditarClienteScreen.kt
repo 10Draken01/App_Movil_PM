@@ -293,7 +293,10 @@ fun EditarClienteScreen(
                             celular.isNotBlank() &&
                             email.trim().isNotBlank() &&
                             android.util.Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches(),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    textColor = Color.White,
+                    disableTextColor = Color.White,
+                    disableBacgroundColor = Color.Gray
                 )
 
                 FormButtomCustom(
@@ -304,7 +307,10 @@ fun EditarClienteScreen(
                         onNavigateToClientes()
                     },
                     enabled = true,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    textColor = Color.White,
+                    disableTextColor = Color.White,
+                    bacgroundColor = Color.Black
                 )
             }
         }

@@ -11,10 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.draken.app_movil_pm.core.components.atoms.ImageCircleComponent
+import com.draken.app_movil_pm.core.components.molecules.ImageCircleComponent
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.CharacterIcon
-import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.InputForm
 import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 

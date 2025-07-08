@@ -42,6 +42,8 @@ fun FormButtomCustom(
     modifier: Modifier = Modifier, // ← Agregar parámetro modifier
     bacgroundColor: Color? = null,
     textColor: Color? = null,
+    disableTextColor: Color? = null,
+    disableBacgroundColor: Color? = null,
     textSize: Int? = null,
     borderSize: Int? = null,
     borderColor: Color? = null
@@ -63,8 +65,8 @@ fun FormButtomCustom(
         colors = ButtonDefaults.buttonColors(
             containerColor = bacgroundColor ?: if (fethButtom) Color.DarkGray else Color.Black,
             contentColor = Color.White,
-            disabledContainerColor = Color.LightGray,
-            disabledContentColor = Color.DarkGray
+            disabledContainerColor = disableBacgroundColor?: Color.LightGray,
+            disabledContentColor = disableTextColor?: Color.DarkGray
         ),
         border = BorderStroke(
             color = borderColor ?: Color.Unspecified,

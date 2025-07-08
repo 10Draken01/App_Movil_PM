@@ -274,7 +274,10 @@ fun AgregarClienteScreen(
                             celular.isNotBlank() &&
                             email.trim().isNotBlank() &&
                             Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches(),
-                    modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio
+                    modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio,
+                    textColor = Color.White,
+                    disableTextColor = Color.White,
+                    disableBacgroundColor = Color.Gray
                 )
 
                 FormButtomCustom(
@@ -283,8 +286,8 @@ fun AgregarClienteScreen(
                     onClick = { onNavigateToClientes() },
                     enabled = true,
                     modifier = Modifier.weight(1f), // ← Cada botón ocupa el mismo espacio
-                    textColor = Color.White
-
+                    textColor = Color.White,
+                    bacgroundColor = Color.Black
                 )
             }
         }

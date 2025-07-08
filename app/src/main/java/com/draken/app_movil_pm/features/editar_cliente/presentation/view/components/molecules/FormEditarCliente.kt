@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.draken.app_movil_pm.core.components.atoms.CustomToggleSwitch
-import com.draken.app_movil_pm.core.components.atoms.ImageCircleComponent
+import com.draken.app_movil_pm.core.components.molecules.ImageCircleComponent
 import com.draken.app_movil_pm.core.components.atoms.SeparatorClasic
 import com.draken.app_movil_pm.core.domain.model.CharacterIcon
 import com.draken.app_movil_pm.core.components.atoms.FormButtomCustom
