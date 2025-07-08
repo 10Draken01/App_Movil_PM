@@ -29,7 +29,6 @@ fun ImageCircleComponent(
     borderColor: Color = Color.Black,
     loadingColor: Color = MaterialTheme.colorScheme.primary
 ) {
-    val context = LocalContext.current
     val isPreview = LocalInspectionMode.current
 
     // Priorizar imageUrl sobre imageUri

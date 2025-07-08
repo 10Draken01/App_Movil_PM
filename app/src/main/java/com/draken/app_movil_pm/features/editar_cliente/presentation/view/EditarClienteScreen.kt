@@ -54,7 +54,8 @@ fun EditarClienteScreen(
         factory = EditarClienteViewModelFactory(
             editarClienteUseCase = EditarClienteModule.editarClienteUseCase,
             cameraManagerRepository = HardwareModule.cameraRepository,
-            publicAppFolderManagerRepository = AppFolderModule.publicAppFolderManagerRepository
+            publicAppFolderManagerRepository = AppFolderModule.publicAppFolderManagerRepository,
+            vibratorRepository = HardwareModule.vibratorRepository
         )
     ),
     onNavigateToClientes: () -> Unit = {}

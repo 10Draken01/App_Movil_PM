@@ -10,6 +10,7 @@ import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.core.public_app_folder_manager.domain.repository.PublicAppFolderManagerRepository
 import com.draken.app_movil_pm.core.domain.model.InputType
 import com.draken.app_movil_pm.core.domain.model.Response
+import com.draken.app_movil_pm.core.hardware.domain.VibratorRepository
 import com.draken.app_movil_pm.features.editar_cliente.domain.usecase.EditarClienteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 class EditarClienteViewModel(
     private val editarClienteUseCase: EditarClienteUseCase,
     private val cameraManagerRepository: CameraManagerRepository,
-    private val publicAppFolderManagerRepository: PublicAppFolderManagerRepository
+    private val publicAppFolderManagerRepository: PublicAppFolderManagerRepository,
+    private val vibratorRepository: VibratorRepository
 
 ) : ViewModel() {
     private val _isIcon = MutableStateFlow<Boolean>(false)
@@ -55,12 +57,21 @@ class EditarClienteViewModel(
     init {
         viewModelScope.launch {
             _deviceHasCamera.value = cameraManagerRepository.hasCamera()
+            _hasCameraPermission.value = cameraManagerRepository.hasCameraPermission()
         }
     }
 
     fun hasCamera() {
         viewModelScope.launch {
             _deviceHasCamera.value = cameraManagerRepository.hasCamera()
+        }
+    }
+
+    fun vibrate(){
+        viewModelScope.launch {
+            if (vibratorRepository.hasVibrator()){
+                vibratorRepository.vibrate()
+            }
         }
     }
 
@@ -115,11 +126,13 @@ class EditarClienteViewModel(
         _stateResponse.value = Response()
 
         if (!validateData()) {
+            vibrate()
             _stateResponse.value = Response(error = "El correo o contraseña no pueden estar vacíos")
             return
         }
 
         if (!isValidEmail(_email.value)) {
+            vibrate()
             _stateResponse.value = Response(error = "Por favor ingresa un correo electrónico válido")
             return
         }
@@ -142,8 +155,10 @@ class EditarClienteViewModel(
                     _stateResponse.value = result
                 }
             } catch (e: Exception) {
+                vibrate()
                 _stateResponse.value = Response(error = "Error de conexión. Inténtalo de nuevo.")
             } finally {
+                vibrate()
                 _loading.value = false
             }
         }

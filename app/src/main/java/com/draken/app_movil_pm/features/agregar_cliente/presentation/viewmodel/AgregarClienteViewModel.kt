@@ -10,6 +10,7 @@ import com.draken.app_movil_pm.core.hardware.domain.CameraManagerRepository
 import com.draken.app_movil_pm.core.public_app_folder_manager.domain.repository.PublicAppFolderManagerRepository
 import com.draken.app_movil_pm.core.domain.model.InputType
 import com.draken.app_movil_pm.core.domain.model.Response
+import com.draken.app_movil_pm.core.hardware.domain.VibratorRepository
 import com.draken.app_movil_pm.features.agregar_cliente.domain.usecase.AgregarClienteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 class AgregarClienteViewModel(
     private val agregarClienteUseCase: AgregarClienteUseCase,
     private val cameraManagerRepository: CameraManagerRepository,
-    private val publicAppFolderManagerRepository: PublicAppFolderManagerRepository
+    private val publicAppFolderManagerRepository: PublicAppFolderManagerRepository,
+    private val vibratorRepository: VibratorRepository
 ) : ViewModel() {
     private val _claveCliente = MutableStateFlow<String>("")
     val claveCliente: StateFlow<String> = _claveCliente.asStateFlow()
@@ -51,6 +53,7 @@ class AgregarClienteViewModel(
     init {
         viewModelScope.launch {
             _deviceHasCamera.value = cameraManagerRepository.hasCamera()
+            _hasCameraPermission.value = cameraManagerRepository.hasCameraPermission()
         }
     }
 
@@ -101,18 +104,28 @@ class AgregarClienteViewModel(
             ),
         )
 
+    fun vibrate(){
+        viewModelScope.launch {
+            if (vibratorRepository.hasVibrator()){
+                vibratorRepository.vibrate()
+            }
+        }
+    }
+
     fun agregarCliente() {
         // Limpiar error anterior
         _stateResponse.value = Response()
 
         if (!validateData()) {
-            _stateResponse.value = Response(error = "El correo o contraseña no pueden estar vacíos")
+            _stateResponse.value = Response(error = "Hay campos vacíos")
+            vibrate()
             return
         }
 
         if (!isValidEmail(_email.value)) {
             _stateResponse.value =
                 Response(error = "Por favor ingresa un correo electrónico válido")
+            vibrate()
             return
         }
 
@@ -136,6 +149,7 @@ class AgregarClienteViewModel(
                 }
             } catch (e: Exception) {
                 Log.e("AgregarClienteViewModel","Error: ${e.message}")
+                vibrate()
                 _stateResponse.value = Response(error = "Error de conexión. Inténtalo de nuevo.")
             } finally {
                 _loading.value = false
@@ -163,14 +177,17 @@ class AgregarClienteViewModel(
                     if (uri != null) {
                         onUriCreated(uri) // ← Callback con resultado exitoso
                     } else {
+                        vibrate()
                         _stateResponse.value = Response(error = "Error al crear el archivo")
                         onUriCreated(null) // ← Callback con error
                     }
                 } else {
+                    vibrate()
                     _stateResponse.value = Response(error = "Campos requeridos")
                     onUriCreated(null)
                 }
             } catch (e: Exception) {
+                vibrate()
                 _stateResponse.value = Response(error = "Error: ${e.message}")
                 onUriCreated(null)
             }

@@ -6,7 +6,7 @@
 
         <domain includeSubdomains="false">192.168.0.1</domain>
         // celular
-        <domain includeSubdomains="false">10.227.83.145</domain>
+        <domain includeSubdomains="false">10.113.187.145</domain>
         // CASA COMPU
         <domain includeSubdomains="false">192.168.0.21</domain>
     </domain-config>

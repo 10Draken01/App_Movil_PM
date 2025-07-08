@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.FlowRowScopeInstance.align
+// Remove the FlowRowScopeInstance import - you don't need it!
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -37,8 +37,7 @@ fun DeleteButton(
 
     Box(
         modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .offset(y = offsetY)
+            .offset(y = (size - 5.dp) / 2)
             .size(deleteButtonSize)
             .background(
                 color = DELETE_BUTTON_BACKGROUND,

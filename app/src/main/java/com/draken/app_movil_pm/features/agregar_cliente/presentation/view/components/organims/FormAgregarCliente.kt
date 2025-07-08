@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.molecules
+package com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.organims
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Column

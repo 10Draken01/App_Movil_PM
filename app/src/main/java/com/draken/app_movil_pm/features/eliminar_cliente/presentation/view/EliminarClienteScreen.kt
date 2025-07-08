@@ -11,7 +11,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -29,10 +28,11 @@ import com.draken.app_movil_pm.ui.theme.Spooftrial_bold
 import com.draken.app_movil_pm.ui.theme.Spooftrial_regular
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import com.draken.app_movil_pm.core.components.atoms.IconCustom
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.eliminar_cliente.di.EliminarClienteModule
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.atoms.FormButtomCustom
-import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.molecules.DataCliente
+import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.organims.DataCliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModel
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModelFactory
 import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
@@ -126,27 +126,18 @@ fun EliminarClienteScreen(
                 )
                 .padding(top = 20.dp, end = 20.dp, start = 20.dp, bottom = 20.dp)
         ) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ){
-                Surface(
-                    shape = CircleShape,
-                    color = Color.Unspecified,
-                    modifier = Modifier.size(200.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Icon(
-                            painter = painterResource(id = android.R.drawable.ic_dialog_alert),
-                            contentDescription = "Profile",
-                            tint = Color.Red,
-                        )
-                    }
-                }
-            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            IconCustom(
+                iconRes = android.R.drawable.ic_dialog_alert,
+                size = 50.dp,
+                contentDescription = "Alert Icon",
+                tint = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Confirmar eliminación",

@@ -6,11 +6,12 @@ plugins {
 
 android {
     namespace = "com.draken.app_movil_pm"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.draken.app_movil_pm"
         minSdk = 26
+        //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -48,6 +49,9 @@ dependencies {
     implementation(libs.com.squareup.okhttp3.logging.interceptor)   //Logger
     implementation(libs.androidx.datastore.preferences)             // DataStore
     implementation(libs.io.coil.kt.coil.compose)                // IO
+
+    implementation(libs.accompanist.permissions)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
