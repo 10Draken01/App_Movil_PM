@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -33,6 +34,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
     buildFeatures {
         compose = true
@@ -48,6 +50,15 @@ dependencies {
     implementation(libs.com.squareup.okhttp3.logging.interceptor)   //Logger
     implementation(libs.androidx.datastore.preferences)             // DataStore
     implementation(libs.io.coil.kt.coil.compose)                // IO
+
+    // 👈 AGREGAR ESTAS LÍNEAS PARA ROOM
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // 👈 AGREGAR PARA OBSERVAR LIVEDATA EN COMPOSE
+    implementation(libs.androidx.compose.runtime.livedata)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

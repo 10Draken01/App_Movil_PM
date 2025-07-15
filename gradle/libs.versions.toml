@@ -1,5 +1,5 @@
 [versions]
-agp = "8.11.0"
+agp = "8.11.1"
 kotlin = "2.2.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -15,6 +15,9 @@ converterGson = "3.0.0"
 ioCoilVersion = "2.7.0"
 loggingInterceptor = "5.1.0"
 dataStore = "1.1.7"
+# 👈 AGREGAR ESTAS VERSIONES para Room
+room = "2.7.2"
+ksp = "2.2.0-2.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -30,6 +33,13 @@ io-coil-kt-coil-compose = { group = "io.coil-kt", name = "coil-compose", version
 com-squareup-okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor"}
 androidx-datastore-preferences = { group = "androidx.datastore", name ="datastore-preferences", version.ref = "dataStore"}
 
+# 👈 AGREGAR ESTAS DEPENDENCIAS para Room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# 👈 AGREGAR para observar LiveData en Compose
+androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -45,4 +55,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+# 👈 AGREGAR ESTE PLUGIN para Room
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
