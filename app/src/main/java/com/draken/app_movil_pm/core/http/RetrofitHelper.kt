@@ -12,9 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
 
-    // Casa Ocosingo 192.168.1.80
-    // CASA COMPU 192.168.0.21
-    private const val BASE_URL = "http://192.168.0.21:8000/api/"
+    private const val BASE_URL = "http://3.226.22.159:8000/api/"
     private const val TIMEOUT = 20L
 
     private var retrofit: Retrofit? = null
