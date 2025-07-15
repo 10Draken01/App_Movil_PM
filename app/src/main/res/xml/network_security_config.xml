@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        // Casa Ocosingo
-        <domain includeSubdomains="false">192.168.1.80</domain>
-
-        <domain includeSubdomains="false">192.168.0.1</domain>
-        // celular
-        <domain includeSubdomains="false">10.113.187.145</domain>
-        // CASA COMPU
-        <domain includeSubdomains="false">192.168.0.21</domain>
+        // API AWS
+        <domain includeSubdomains="false">3.226.22.159</domain>
     </domain-config>
 </network-security-config>
