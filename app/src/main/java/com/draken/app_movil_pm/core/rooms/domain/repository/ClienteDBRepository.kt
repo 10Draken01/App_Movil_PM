@@ -4,7 +4,7 @@ import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
 import kotlinx.coroutines.flow.Flow
 
 interface ClienteDBRepository {
-    fun getClientesPage(page: Int): Flow<List<ClienteEntitie>>
+    suspend fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>>
 
     suspend fun getClienteByClaveCliente(claveCliente: String): ClienteEntitie?
 

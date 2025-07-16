@@ -7,28 +7,35 @@ import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
 import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 
 class AddClienteUseCase(
-    private val repositoryFunInsertCliente: suspend (cliente: ClienteEntitie) -> Boolean
+    private val reposiClienteDBRepository: ClienteDBRepository
 ) {
     suspend operator fun invoke(cliente: Cliente): Response {
-        val clienteEntitie = ClienteEntitie(
-            claveCliente = cliente.claveCliente,
-            nombre = cliente.nombre,
-            celular = cliente.celular,
-            email = cliente.email,
-            characterIcon = cliente.characterIcon,
-        )
-
-        val ok = repositoryFunInsertCliente(clienteEntitie)
-
-        return if( ok ) {
-            Response(
-                message = "Cliente agregado"
-            )
-        } else {
-            Response(
-                error = "Error al agregar cliente"
+        try {
+            val clienteEntitie = ClienteEntitie(
+                claveCliente = cliente.claveCliente,
+                nombre = cliente.nombre,
+                celular = cliente.celular,
+                email = cliente.email,
+                characterIcon = cliente.characterIcon,
             )
 
+            val ok = reposiClienteDBRepository.insertCliente(clienteEntitie)
+
+            return if( ok ) {
+                Response(
+                    message = "Cliente agregado"
+                )
+            } else {
+                Response(
+                    error = "Error al agregar cliente"
+                )
+
+            }
+        } catch (error: Error) {
+            Log.e("ErrrorAddClienteDB", "Error: ${error.message}")
+            return Response(
+                error = "Error al agregar cliente: ${error.message}"
+            )
         }
     }
 }

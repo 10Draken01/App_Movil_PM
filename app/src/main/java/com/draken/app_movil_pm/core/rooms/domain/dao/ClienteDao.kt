@@ -21,7 +21,7 @@ interface ClienteDao {
     // La page se obtiene calculando los documentos totales / 100 y redondeando para arriba
     // Y ademas sin no se pueden traer 100 clientes que traigan los que halla
     @Query("SELECT * FROM Clientes LIMIT :limit OFFSET :offset")
-    fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>>
+    suspend fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>>
 
     // Consulta para actualizar un cliente por el claveCliente
     // No actualiza claveCliente

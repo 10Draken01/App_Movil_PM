@@ -3,9 +3,10 @@ package com.draken.app_movil_pm.core.rooms.domain.usecase
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.core.domain.model.Response
 import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
+import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 
 class UpdateClienteUseCase(
-    private val repositoryFunUpdateCliente: suspend (cliente: ClienteEntitie) -> Boolean
+    private val reposiClienteDBRepository: ClienteDBRepository
 ) {
     suspend operator fun invoke(cliente: Cliente): Response {
         val clienteEntitie = ClienteEntitie(
@@ -16,7 +17,7 @@ class UpdateClienteUseCase(
             characterIcon = cliente.characterIcon,
         )
 
-        val ok = repositoryFunUpdateCliente(clienteEntitie)
+        val ok = reposiClienteDBRepository.updateCliente(clienteEntitie)
 
         return if( ok ) {
             Response(

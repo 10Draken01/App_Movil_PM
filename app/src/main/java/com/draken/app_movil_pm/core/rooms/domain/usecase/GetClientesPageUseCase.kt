@@ -1,17 +1,43 @@
 package com.draken.app_movil_pm.core.rooms.domain.usecase
 
-import com.draken.app_movil_pm.core.domain.model.Cliente
+import android.util.Log
 import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
+import com.draken.app_movil_pm.core.rooms.domain.model.ResponseRooms
+import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 
 class GetClientesPageUseCase(
-    private val repositoryFunGetClientesPage: suspend (limit: Int, offset: Int) -> Flow<List<ClienteEntitie>>
+    private val reposiClienteDBRepository: ClienteDBRepository
 ) {
-    suspend operator fun invoke(page: Int): Flow<List<ClienteEntitie>> {
+    // La función invoke ahora devuelve un Flow<ResponseRooms>
+    suspend fun invoke(page: Int): Flow<ResponseRooms> {
         val limit = 100
         val offset = (page - 1) * limit
 
-        return repositoryFunGetClientesPage(limit, offset)
+        return reposiClienteDBRepository.getClientesPage(limit, offset)
+            .map { clientesList ->
+                if (clientesList.isNotEmpty()) {
+                    ResponseRooms(
+                        data = clientesList,
+                        message = "Clientes obtenidos correctamente",
+                        isLoading = false
+                    )
+                } else {
+                    ResponseRooms(
+                        error = "No se encontraron clientes",
+                        isLoading = false
+                    )
+                }
+            }
+            .catch { exception ->
+                Log.e("ErrorGetClientesPage", "Error en el flow: ${exception.message}", exception)
+                emit(ResponseRooms(
+                    error = "Error al obtener clientes: ${exception.message}",
+                    isLoading = false
+                ))
+            }
     }
 }
