@@ -2,6 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- OBLIGATORIO: Permiso para acceder a al estado del internet -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- OBLIGATORIO: Permiso para mostrar notificaciones al usuario -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- OBLIGATORIO: Permiso para crear servicios que corren en primer plano -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- OBLIGATORIO: Permiso para servicios foreground que sincronizan datos -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
     <!-- OBLIGATORIO: Permiso para acceder a internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -39,6 +51,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_Movil_PM"
         tools:targetApi="31">
+
+        <service
+            android:name=".MyNotificationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync">  <!-- Ejemplo, debe coincidir con el permiso -->
+            <!-- Si combinas tipos: android:foregroundServiceType="dataSync|remoteMessaging" -->
+        </service>
 
         <provider
             android:name="androidx.core.content.FileProvider"

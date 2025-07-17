@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.core.datastore
+package com.draken.app_movil_pm.core.data_store
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 

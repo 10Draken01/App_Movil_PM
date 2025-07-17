@@ -2,7 +2,7 @@ package com.draken.app_movil_pm.features.login.di
 
 import com.draken.app_movil_pm.core.di.DataStoreModule
 import com.draken.app_movil_pm.core.http.RetrofitHelper
-import com.draken.app_movil_pm.core.datastore.DataStoreManager
+import com.draken.app_movil_pm.core.data_store.DataStoreManager
 import com.draken.app_movil_pm.features.login.data.datasource.remote.LoginService
 import com.draken.app_movil_pm.features.login.data.repository.LoginRepositoryImpl
 import com.draken.app_movil_pm.features.login.data.repository.TokenRepositoryImpl

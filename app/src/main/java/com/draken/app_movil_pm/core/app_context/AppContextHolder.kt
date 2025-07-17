@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.core.appcontext
+package com.draken.app_movil_pm.core.app_context
 
 import android.content.Context
 

@@ -1,7 +1,7 @@
 package com.draken.app_movil_pm.core.http.interceptor
 
-import com.draken.app_movil_pm.core.datastore.DataStoreManager
-import com.draken.app_movil_pm.core.datastore.PreferenceKeys
+import com.draken.app_movil_pm.core.data_store.DataStoreManager
+import com.draken.app_movil_pm.core.data_store.PreferenceKeys
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

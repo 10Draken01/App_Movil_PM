@@ -8,14 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.draken.app_movil_pm.core.appcontext.AppContextHolder
-import com.draken.app_movil_pm.core.domain.model.CharacterIcon
-import com.draken.app_movil_pm.core.domain.model.Cliente
+import com.draken.app_movil_pm.core.app_context.AppContextHolder
 import com.draken.app_movil_pm.core.navigation.AppNavigation
-import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
-import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.AgregarClienteScreen
-import com.draken.app_movil_pm.features.editar_cliente.presentation.view.EditarClienteScreen
 import com.draken.app_movil_pm.ui.theme.App_Movil_PMTheme
 
 class MainActivity : ComponentActivity() {

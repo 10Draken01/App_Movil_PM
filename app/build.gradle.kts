@@ -60,6 +60,10 @@ dependencies {
     // 👈 AGREGAR PARA OBSERVAR LIVEDATA EN COMPOSE
     implementation(libs.androidx.compose.runtime.livedata)
 
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    implementation(libs.kotlinx.coroutines.android)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
