@@ -1,5 +1,4 @@
-package com.draken.app_movil_pm.core.navigation
-
+package com.draken.app_movil_pm.core.navigation.data
 
 object NavigationRoutes {
     const val LOGIN = "login"

@@ -5,24 +5,47 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.draken.app_movil_pm.R
-import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesUseCase
 import kotlinx.coroutines.launch
-import com.draken.app_movil_pm.context.UseDataContext
+import com.draken.app_movil_pm.core.connectivity_monitor.domain.ConnectivityMonitorRepository
 import com.draken.app_movil_pm.core.domain.model.Cliente
+import com.draken.app_movil_pm.core.rooms.domain.usecase.GetLocalClientesPageUseCase
+import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesPageUseCase
 
 class ClientesViewModel(
-    private val getClientesUseCase: GetClientesUseCase
+    private val getClientesPageUseCase: GetClientesPageUseCase,
+    private val getLocalClientesPageUseCase: GetLocalClientesPageUseCase,
+    private val connectivityMonitorRepository: ConnectivityMonitorRepository
 ) : ViewModel() {
+    private val _isConnected = MutableStateFlow(false)
+    val isConnected: StateFlow<Boolean> = _isConnected
     private val _clientes = MutableStateFlow<List<Cliente>>(emptyList())
     val clientes: StateFlow<List<Cliente>> = _clientes
 
     init {
-        fetchCharacters(page = 1)
+        getClientesPage(page = 1)
     }
 
-    fun fetchCharacters(page: Int) {
+    fun getClientesPage(page: Int){
+
+        _isConnected.value = connectivityMonitorRepository.isCurrentlyConnected()
+        if (_isConnected.value) {
+            fetchClientes(page = page)
+        } else {
+            getLocalClientesPage(page = page)
+        }
+    }
+
+    private fun getLocalClientesPage(page: Int) {
         viewModelScope.launch {
-            _clientes.value = getClientesUseCase(page = page)
+            getLocalClientesPageUseCase(page = page).collect {
+                _clientes.value = it.toDomain()
+            }
+        }
+    }
+
+    private fun fetchClientes(page: Int) {
+        viewModelScope.launch {
+            _clientes.value = getClientesPageUseCase(page = page)
         }
     }
 
@@ -45,7 +68,7 @@ class ClientesViewModel(
     private var _emailText = MutableStateFlow("")
     var emailText: StateFlow<String> = _emailText
 
-    fun onChangeSearchText(text: String){
+    fun onChangeSearchText(text: String) {
         _searchText.value = text
     }
 }

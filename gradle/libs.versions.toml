@@ -19,7 +19,6 @@ loggingInterceptor = "5.1.0"
 dataStore = "1.1.7"
 # 👈 AGREGAR ESTAS VERSIONES para Room
 room = "2.7.2"
-ksp = "2.2.0-2.0.2"
 # Instalar hilt
 hilt = "2.57"
 hiltCompiler = "2.57"
@@ -66,6 +65,4 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-# 👈 AGREGAR ESTE PLUGIN para Room
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

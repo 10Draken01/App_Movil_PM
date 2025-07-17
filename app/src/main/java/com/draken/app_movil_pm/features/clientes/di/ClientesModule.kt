@@ -4,7 +4,7 @@ import com.draken.app_movil_pm.core.http.RetrofitHelper
 import com.draken.app_movil_pm.features.clientes.data.datasource.remote.ClienteService
 import com.draken.app_movil_pm.features.clientes.data.repository.ClienteRepositoryImpl
 import com.draken.app_movil_pm.features.clientes.domain.repository.ClienteRepository
-import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesUseCase
+import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesPageUseCase
 
 object ClientesModule {
 
@@ -20,7 +20,7 @@ object ClientesModule {
         ClienteRepositoryImpl(clienteService)
     }
 
-    val getClientesUseCase: GetClientesUseCase by lazy {
-        GetClientesUseCase(clienteRepository)
+    val getClientesPageUseCase: GetClientesPageUseCase by lazy {
+        GetClientesPageUseCase(clienteRepository)
     }
 }

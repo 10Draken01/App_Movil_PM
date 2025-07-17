@@ -7,5 +7,6 @@ data class Cliente(
     val email: String,
     val characterIcon: CharacterIcon,
     val createdAt: String? = null,
-    val updatedAt: String? = null
+    val updatedAt: String? = null,
+    val queryType: QueryType? = null
 )

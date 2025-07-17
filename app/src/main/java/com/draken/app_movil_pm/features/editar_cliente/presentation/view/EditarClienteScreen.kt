@@ -43,7 +43,7 @@ import com.draken.app_movil_pm.core.di.HardwareModule
 import com.draken.app_movil_pm.features.editar_cliente.di.EditarClienteModule
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModel
 import com.draken.app_movil_pm.features.editar_cliente.presentation.viewmodel.EditarClienteViewModelFactory
-import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
+import com.draken.app_movil_pm.core.navigation.presentation.viewmodel.SharedDataViewModel
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.components.molecules.FormEditarCliente
 import kotlinx.coroutines.delay
 

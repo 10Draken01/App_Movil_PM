@@ -1,11 +1,17 @@
-package com.draken.app_movil_pm.core.navigation
+package com.draken.app_movil_pm.core.navigation.presentation.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.draken.app_movil_pm.core.di.ConnectivityMonitorModule
+import com.draken.app_movil_pm.core.navigation.data.NavigationRoutes
+import com.draken.app_movil_pm.core.navigation.presentation.viewmodel.SharedDataViewModel
+import com.draken.app_movil_pm.core.navigation.presentation.viewmodel.SharedDataViewModelFactory
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.AgregarClienteScreen
 import com.draken.app_movil_pm.features.editar_cliente.presentation.view.EditarClienteScreen
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.EliminarClienteScreen
@@ -15,14 +21,18 @@ import com.draken.app_movil_pm.features.register.presentation.view.RegisterScree
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController = rememberNavController()
+    sharedViewModel: SharedDataViewModel = viewModel(
+        factory = SharedDataViewModelFactory(
+            connectivityMonitorRepository = ConnectivityMonitorModule.connectivityMonitorRepository
+        )
+    )
 ) {
-    // ViewModel compartido a nivel de navegación
-    val sharedViewModel: SharedDataViewModel = viewModel()
+    val navController: NavHostController = rememberNavController()
+    val isConnected by sharedViewModel.isConnected.collectAsState()
 
     NavHost(
         navController = navController,
-        startDestination = NavigationRoutes.LOGIN
+        startDestination = if(isConnected) NavigationRoutes.LOGIN else NavigationRoutes.CLIENTES
     ) {
         composable(NavigationRoutes.LOGIN) {
             LoginScreen(

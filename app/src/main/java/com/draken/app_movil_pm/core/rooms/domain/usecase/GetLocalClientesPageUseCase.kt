@@ -1,19 +1,17 @@
 package com.draken.app_movil_pm.core.rooms.domain.usecase
 
 import android.util.Log
-import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
 import com.draken.app_movil_pm.core.rooms.domain.model.ResponseRooms
 import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 
-class GetClientesPageUseCase(
+class GetLocalClientesPageUseCase(
     private val reposiClienteDBRepository: ClienteDBRepository
 ) {
     // La función invoke ahora devuelve un Flow<ResponseRooms>
-    suspend fun invoke(page: Int): Flow<ResponseRooms> {
+    operator suspend fun invoke(page: Int): Flow<ResponseRooms> {
         val limit = 100
         val offset = (page - 1) * limit
 

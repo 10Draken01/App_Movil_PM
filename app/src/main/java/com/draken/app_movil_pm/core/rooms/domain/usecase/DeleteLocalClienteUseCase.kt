@@ -1,12 +1,10 @@
 package com.draken.app_movil_pm.core.rooms.domain.usecase
 
 import android.util.Log
-import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.core.domain.model.Response
-import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
 import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 
-class DeleteClienteUseCase(
+class DeleteLocalClienteUseCase(
     private val reposiClienteDBRepository: ClienteDBRepository
 ) {
     suspend operator fun invoke(claveCliente: String): Response {

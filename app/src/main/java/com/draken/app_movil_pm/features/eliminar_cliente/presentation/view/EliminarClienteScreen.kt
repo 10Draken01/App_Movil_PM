@@ -35,7 +35,7 @@ import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.compo
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.components.organims.DataCliente
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModel
 import com.draken.app_movil_pm.features.eliminar_cliente.presentation.viewmodel.EliminarClienteViewModelFactory
-import com.draken.app_movil_pm.core.navigation.SharedDataViewModel
+import com.draken.app_movil_pm.core.navigation.presentation.viewmodel.SharedDataViewModel
 import kotlinx.coroutines.delay
 
 @Composable

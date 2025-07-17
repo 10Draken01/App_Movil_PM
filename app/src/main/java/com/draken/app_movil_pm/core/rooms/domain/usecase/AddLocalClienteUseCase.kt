@@ -6,7 +6,7 @@ import com.draken.app_movil_pm.core.domain.model.Response
 import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie
 import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 
-class AddClienteUseCase(
+class AddLocalClienteUseCase(
     private val reposiClienteDBRepository: ClienteDBRepository
 ) {
     suspend operator fun invoke(cliente: Cliente): Response {

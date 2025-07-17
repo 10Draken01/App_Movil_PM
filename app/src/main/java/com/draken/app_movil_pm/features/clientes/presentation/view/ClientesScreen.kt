@@ -23,6 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import com.draken.app_movil_pm.core.di.ConnectivityMonitorModule
+import com.draken.app_movil_pm.core.di.LocalClientesModule
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.di.ClientesModule
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.TopBarCustom
@@ -36,7 +38,11 @@ import kotlin.math.min
 @Composable
 fun ClientesScreen(
     viewModel: ClientesViewModel = viewModel(
-        factory = ClientesViewModelFactory (ClientesModule.getClientesUseCase)
+        factory = ClientesViewModelFactory (
+            getClientesPageUseCase = ClientesModule.getClientesPageUseCase,
+            getLocalClientesPageUseCase = LocalClientesModule.getLocalClientesPageUseCase,
+            connectivityMonitorRepository = ConnectivityMonitorModule.connectivityMonitorRepository
+        )
     ),
     onNavigateToAgregarCliente: () -> Unit = {},
     onNavigateToEditarCliente: (cliente: Cliente) -> Unit = {},
@@ -206,7 +212,7 @@ fun ClientesScreen(
                 onChangePageInputText = { it -> pageInputText = it},
                 onChangeCurrentPage = { it ->
                     currentPage = it
-                    viewModel.fetchCharacters(currentPage)
+                    viewModel.getClientesPage(currentPage)
                 },
                 onChangeCurrentSubPage = { it -> currentSubPage = it},
                 filteredClientes = filteredClientes,
