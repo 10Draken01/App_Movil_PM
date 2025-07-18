@@ -1,10 +1,16 @@
 package com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.StatusLabel
@@ -19,27 +25,31 @@ fun ClienteActionsSection(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.spacedBy(SPACING_SMALL)
+    Row(
+        verticalAlignment = Alignment.Top,
+        modifier = Modifier
     ) {
-        // Botones de acción y indicador de expansión
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(SPACING_SMALL)
+        // Indicador de expansión
+        ExpandIndicator(isExpanded = isExpanded)
+
+        // Column que contiene los botones arriba y el StatusLabel abajo
+        Column(
+            verticalArrangement = Arrangement.spacedBy(SPACING_SMALL),
+            modifier = Modifier
+                .width(IntrinsicSize.Max)
         ) {
-            // Botones de acción
+            // Botones de acción (arriba)
             ActionButtons(
                 clienteNombre = cliente.nombre,
                 onEditClick = onEditClick,
                 onDeleteClick = onDeleteClick
             )
 
-            // Indicador de expansión
-            ExpandIndicator(isExpanded = isExpanded)
+            // Label de estado (abajo) - ocupa el ancho máximo del contenedor
+            StatusLabel(
+                isLocal = cliente.isLocal,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
-
-        // Label de estado (Local/Nube)
-        StatusLabel(isLocal = cliente.isLocal)
     }
 }

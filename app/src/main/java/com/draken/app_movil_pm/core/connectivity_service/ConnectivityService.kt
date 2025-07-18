@@ -6,16 +6,17 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.draken.app_movil_pm.R
-import com.draken.app_movil_pm.core.app_context.AppContextHolder
 import com.draken.app_movil_pm.core.connectivity_monitor.data.ConnectivityMonitor
 import com.draken.app_movil_pm.core.connectivity_monitor.domain.ConnectivityMonitorRepository
-import com.draken.app_movil_pm.core.di.ConnectivityMonitorModule
+import com.draken.app_movil_pm.core.add_cliente_service.di.AddClienteModule
+import com.draken.app_movil_pm.core.di.LocalClientesModule
+import com.draken.app_movil_pm.core.domain.model.CharacterIcon
+import com.draken.app_movil_pm.core.domain.model.Cliente
+import com.draken.app_movil_pm.core.domain.model.QueryType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -106,12 +107,43 @@ class ConnectivityService : Service() {
         serviceScope.launch {
             try {
                 Log.d("ConnectivityService", "Iniciando sincronización de datos...")
-                // TODO: Implementar tu lógica de sincronización aquí
-                // Ejemplos:
-                // - Subir datos pendientes al servidor
-                // - Descargar actualizaciones
-                // - Sincronizar preferencias de usuario
-                // - Enviar métricas y analytics
+                val getAllLocalClientesPageUseCase = LocalClientesModule.getAllLocalClientesPageUseCase
+                val addClienteUseCase = AddClienteModule.addClienteUseCase
+                val deleteLocalClienteUseCase = LocalClientesModule.deleteLocalClienteUseCase
+                getAllLocalClientesPageUseCase().collect {
+                    responseRooms ->
+                    if( responseRooms.data.isEmpty() ) {
+                        Log.d("ConnectivityService", "No hay clientes locales para sincronizar")
+
+                    } else {
+                        Log.d("ConnectivityService", "Hay ${responseRooms.data.size} clientes locales para sincronizar")
+                        val clientes = responseRooms.toDomain()
+                        clientes.forEach { cliente ->
+                            if( cliente.queryType == QueryType.ADD){
+                                var response = addClienteUseCase(
+                                    claveCliente = cliente.claveCliente,
+                                    nombre = cliente.nombre,
+                                    celular = cliente.celular,
+                                    email = cliente.email,
+                                    characterIcon = CharacterIcon(
+                                        characterIconNumber = cliente.characterIcon.characterIconNumber,
+                                        characterIconUrl = cliente.characterIcon.characterIconUrl,
+                                        characterIconUri = cliente.characterIcon.characterIconUri
+                                    )
+                                )
+                                Log.d("ConnectivityService", "Sincronización de cliente ${cliente.claveCliente} - ${response.message}")
+                                response = deleteLocalClienteUseCase(claveCliente = cliente.claveCliente)
+                                Log.d("ConnectivityService", "Eliminación de cliente ${cliente.claveCliente} - ${response.message}")
+
+                            } else if( cliente.queryType == QueryType.UPDATE){
+
+                            } else {
+                                Log.d("ConnectivityService", "Cliente sin tipo de consulta: ${cliente.claveCliente}")
+                            }
+                        }
+                    }
+                }
+
 
             } catch (e: Exception) {
                 Log.e("ConnectivityService", "Error en sincronización de datos", e)

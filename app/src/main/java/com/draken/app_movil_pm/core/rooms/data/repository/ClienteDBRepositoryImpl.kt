@@ -17,6 +17,12 @@ class ClienteDBRepositoryImpl(
             )
     }
 
+    override suspend fun getAllClientes(): Flow<List<ClienteEntitie>> {
+        return database
+            .clienteDao()
+            .getAllClientes()
+    }
+
     override suspend fun getClienteByClaveCliente(claveCliente: String): ClienteEntitie? {
         return database
             .clienteDao()

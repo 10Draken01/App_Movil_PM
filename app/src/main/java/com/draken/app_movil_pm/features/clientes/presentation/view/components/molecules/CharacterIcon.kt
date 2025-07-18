@@ -45,8 +45,6 @@ fun CharacterIcon(
                     fallbackIconRes = characterIcon.characterIconNumber,
                     iconSize = iconSize
                 )
-            } else if (characterIcon.characterIconUri != null){
-                // Usar URI si existe
             } else {
                 // Usar icono local si no hay URL
                 LocalIcon(

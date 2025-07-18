@@ -19,6 +19,10 @@ interface ClienteDao {
     @Query("SELECT * FROM clientes LIMIT :limit OFFSET :offset")
     fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>>
 
+    // Obtener todos los clientes de la tabla
+    @Query("SELECT * FROM clientes")
+    suspend fun getAllClientes(): Flow<List<ClienteEntitie>>
+
     // Actualizar cliente por claveCliente - Retorna cantidad de filas afectadas
     @Query("""
         UPDATE clientes 

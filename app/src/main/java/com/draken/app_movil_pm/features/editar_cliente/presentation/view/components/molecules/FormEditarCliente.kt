@@ -83,6 +83,7 @@ fun FormEditarCliente(
     } else {
         if( characterIcon.characterIconUrl != null || characterIcon.characterIconUri != null) {
             ImageCircleComponent(
+                modifier = Modifier.fillMaxSize(),
                 imageUrl = characterIcon.characterIconUrl?.url,
                 imageUri = characterIcon.characterIconUri,
                 onDeleteClick = { onChangeCharacterIconUri(null) }

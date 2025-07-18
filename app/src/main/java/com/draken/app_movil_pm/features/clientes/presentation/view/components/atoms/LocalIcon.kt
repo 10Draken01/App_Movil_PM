@@ -1,5 +1,6 @@
 package com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms
 
+import android.util.Log
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable

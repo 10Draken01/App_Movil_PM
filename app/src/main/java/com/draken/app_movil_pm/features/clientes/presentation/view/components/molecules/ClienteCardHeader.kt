@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.draken.app_movil_pm.R
+import com.draken.app_movil_pm.core.components.molecules.ImageCircleComponent
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.ButtonIconCustom
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.ClienteInfoRow
@@ -49,11 +50,26 @@ fun ClienteCardHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(SPACING_MEDIUM)
     ) {
-        // Avatar del cliente
-        CharacterIcon(
-            characterIcon = cliente.characterIcon,
-            size = AVATAR_SIZE
-        )
+
+        if (
+            cliente.characterIcon.characterIconUri != null
+            ||
+            cliente.characterIcon.characterIconUrl != null
+        ) {
+
+            // Avatar del cliente
+            ImageCircleComponent(
+                imageUri = cliente.characterIcon.characterIconUri,
+                imageUrl = cliente.characterIcon.characterIconUrl?.url,
+                justPreview = true,
+                size = AVATAR_SIZE
+            )
+        } else {
+            CharacterIcon(
+                characterIcon = cliente.characterIcon,
+                size = AVATAR_SIZE
+            )
+        }
 
         // Información principal del cliente
         ClienteMainInfo(

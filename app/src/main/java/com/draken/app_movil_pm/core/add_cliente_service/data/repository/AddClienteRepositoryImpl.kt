@@ -1,18 +1,17 @@
-package com.draken.app_movil_pm.features.agregar_cliente.data.repository
+package com.draken.app_movil_pm.core.add_cliente_service.data.repository
 
 import android.util.Log
-import com.draken.app_movil_pm.features.agregar_cliente.data.datasource.remote.AgregarClienteService
-import com.draken.app_movil_pm.features.agregar_cliente.data.model.AgregarClienteDto
+import com.draken.app_movil_pm.core.add_cliente_service.data.datasource.remote.AddClienteService
+import com.draken.app_movil_pm.core.add_cliente_service.domain.repository.AddClienteRepository
 import com.draken.app_movil_pm.core.domain.model.Response
-import com.draken.app_movil_pm.features.agregar_cliente.domain.repository.AgregarClienteRepository
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.IOException
 
-class AgregarClienteRepositoryImpl(
-    private val api: AgregarClienteService,
-) : AgregarClienteRepository {
-    override suspend fun agregarCliente(
+class AddClienteRepositoryImpl(
+    private val service: AddClienteService,
+) : AddClienteRepository {
+    override suspend fun addCliente(
         claveCliente: RequestBody,
         nombre: RequestBody,
         celular: RequestBody,
@@ -21,7 +20,7 @@ class AgregarClienteRepositoryImpl(
         image: MultipartBody.Part?
     ): Response {
         return try {
-            val res = api.agregarCliente(
+            val res = service.addCliente(
                 claveCliente = claveCliente,
                 nombre = nombre,
                 celular = celular,
@@ -31,9 +30,9 @@ class AgregarClienteRepositoryImpl(
             )
 
             if (res.isSuccessful && res.body() != null) {
-                val responseDto = res.body()!!
+                val response = res.body()!!
                 // Convertir DTO a modelo de dominio
-                responseDto.toDomain()
+                response
             } else {
                 // Manejo específico de códigos de error HTTP
                 when (res.code()) {

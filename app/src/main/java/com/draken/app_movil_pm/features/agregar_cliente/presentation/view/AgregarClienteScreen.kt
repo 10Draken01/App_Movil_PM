@@ -37,10 +37,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import com.draken.app_movil_pm.core.add_cliente_service.di.AddClienteModule
 import com.draken.app_movil_pm.core.di.AppFolderModule
 import com.draken.app_movil_pm.core.di.HardwareModule
-import com.draken.app_movil_pm.features.agregar_cliente.di.AgregarClienteModule
 import com.draken.app_movil_pm.core.components.atoms.FormButtomCustom
+import com.draken.app_movil_pm.core.di.ConnectivityMonitorModule
+import com.draken.app_movil_pm.core.di.LocalClientesModule
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.view.components.organims.FormAgregarCliente
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.viewmodel.AgregarClienteViewModel
 import com.draken.app_movil_pm.features.agregar_cliente.presentation.viewmodel.AgregarClienteViewModelFactory
@@ -50,10 +52,12 @@ import kotlinx.coroutines.delay
 fun AgregarClienteScreen(
     viewModel: AgregarClienteViewModel = viewModel(
         factory = AgregarClienteViewModelFactory(
-            agregarClienteUseCase = AgregarClienteModule.agregarClienteUseCase,
+            addClienteUseCase = AddClienteModule.addClienteUseCase,
+            addLocalClienteUseCase = LocalClientesModule.addLocalClienteUseCase,
             cameraManagerRepository = HardwareModule.cameraRepository,
             publicAppFolderManagerRepository = AppFolderModule.publicAppFolderManagerRepository,
-            vibratorRepository = HardwareModule.vibratorRepository
+            vibratorRepository = HardwareModule.vibratorRepository,
+            connectivityMonitorRepository = ConnectivityMonitorModule.connectivityMonitorRepository
         )
     ),
     onNavigateToClientes: () -> Unit = {}

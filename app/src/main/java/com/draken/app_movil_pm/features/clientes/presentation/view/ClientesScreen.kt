@@ -46,7 +46,7 @@ fun ClientesScreen(
     ),
     onNavigateToAgregarCliente: () -> Unit = {},
     onNavigateToEditarCliente: (cliente: Cliente) -> Unit = {},
-    onNavigateToEliminarCliente: (cliente: Cliente) -> Unit = {},
+    onNavigateToEliminarCliente: (cliente: Cliente) -> Unit = {}
 ) {
     // Estados de paginación
     var currentPage by remember { mutableIntStateOf(1) }

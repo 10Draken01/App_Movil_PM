@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface ClienteDBRepository {
     fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>>
 
+    suspend fun getAllClientes(): Flow<List<ClienteEntitie>>
+
     suspend fun getClienteByClaveCliente(claveCliente: String): ClienteEntitie?
 
     suspend fun insertCliente(cliente: ClienteEntitie): Boolean

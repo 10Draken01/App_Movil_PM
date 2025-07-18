@@ -2,6 +2,7 @@ package com.draken.app_movil_pm.features.eliminar_cliente.presentation.view.comp
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ fun ClientIconSection(
         ) {
             if (cliente.characterIcon.characterIconUrl != null) {
                 ImageCircleComponent(
+                    modifier = Modifier.fillMaxSize(),
                     imageUrl = cliente.characterIcon.characterIconUrl.url,
                     onDeleteClick = {},
                     justPreview = true

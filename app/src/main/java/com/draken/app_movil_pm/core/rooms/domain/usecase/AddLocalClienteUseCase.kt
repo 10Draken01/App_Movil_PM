@@ -17,6 +17,7 @@ class AddLocalClienteUseCase(
                 celular = cliente.celular,
                 email = cliente.email,
                 characterIcon = cliente.characterIcon,
+
             )
 
             val ok = reposiClienteDBRepository.insertCliente(clienteEntitie)

@@ -38,7 +38,7 @@ fun ButtonIconCustom(
             Icon(
                 painter = icon,
                 contentDescription = contentDescription,
-                tint = if (enabled) Color.Unspecified else Color.Gray,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(sizeIcon)
                     .rotate(rotation ?: 0f)

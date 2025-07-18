@@ -1,14 +1,14 @@
-package com.draken.app_movil_pm.features.agregar_cliente.domain.usecase
+package com.draken.app_movil_pm.core.add_cliente_service.domain.usecase
 
+import com.draken.app_movil_pm.core.add_cliente_service.domain.repository.AddClienteRepository
 import com.draken.app_movil_pm.core.domain.model.CharacterIcon
 import com.draken.app_movil_pm.core.filemanager.domain.FileManagerRepository
 import com.draken.app_movil_pm.core.domain.model.Response
-import com.draken.app_movil_pm.features.agregar_cliente.domain.repository.AgregarClienteRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 
-class AgregarClienteUseCase(
-    private val repository: AgregarClienteRepository,
+class AddClienteUseCase(
+    private val addClienteRepository: AddClienteRepository,
     private val fileManagerRepository: FileManagerRepository
 ) {
     suspend operator fun invoke(
@@ -31,7 +31,7 @@ class AgregarClienteUseCase(
             null
         }
 
-        return repository.agregarCliente(
+        return addClienteRepository.addCliente(
             claveCliente = claveClienteRequestBody,
             nombre = nombreRequestBody,
             celular = celularRequestBody,

@@ -6,6 +6,7 @@ import com.draken.app_movil_pm.core.rooms.data.service.ClientesAppDatabase
 import com.draken.app_movil_pm.core.rooms.domain.repository.ClienteDBRepository
 import com.draken.app_movil_pm.core.rooms.domain.usecase.AddLocalClienteUseCase
 import com.draken.app_movil_pm.core.rooms.domain.usecase.DeleteLocalClienteUseCase
+import com.draken.app_movil_pm.core.rooms.domain.usecase.GetAllLocalClientesPageUseCase
 import com.draken.app_movil_pm.core.rooms.domain.usecase.GetLocalClientesPageUseCase
 import com.draken.app_movil_pm.core.rooms.domain.usecase.UpdateLocalClienteUseCase
 
@@ -21,6 +22,10 @@ object LocalClientesModule {
     }
 
     val getLocalClientesPageUseCase = GetLocalClientesPageUseCase(
+        reposiClienteDBRepository = clienteDBRepository
+    )
+
+    val getAllLocalClientesPageUseCase = GetAllLocalClientesPageUseCase(
         reposiClienteDBRepository = clienteDBRepository
     )
 

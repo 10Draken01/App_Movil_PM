@@ -20,6 +20,7 @@ private val BOTTOM_SPACING = 15.dp
 
 @Composable
 fun ImageCircleComponent(
+    modifier: Modifier = Modifier,
     imageUri: Uri? = null,
     imageUrl: String? = null,
     onDeleteClick: () -> Unit = {},
@@ -41,7 +42,7 @@ fun ImageCircleComponent(
     val hasImage = imageSource != null
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Box(

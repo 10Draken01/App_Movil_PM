@@ -5,23 +5,28 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.draken.app_movil_pm.R
+import com.draken.app_movil_pm.core.add_cliente_service.domain.usecase.AddClienteUseCase
+import com.draken.app_movil_pm.core.connectivity_monitor.domain.ConnectivityMonitorRepository
 import com.draken.app_movil_pm.core.domain.model.CharacterIcon
+import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.core.hardware.domain.CameraManagerRepository
 import com.draken.app_movil_pm.core.public_app_folder_manager.domain.repository.PublicAppFolderManagerRepository
 import com.draken.app_movil_pm.core.domain.model.InputType
 import com.draken.app_movil_pm.core.domain.model.Response
 import com.draken.app_movil_pm.core.hardware.domain.VibratorRepository
-import com.draken.app_movil_pm.features.agregar_cliente.domain.usecase.AgregarClienteUseCase
+import com.draken.app_movil_pm.core.rooms.domain.usecase.AddLocalClienteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AgregarClienteViewModel(
-    private val agregarClienteUseCase: AgregarClienteUseCase,
+    private val addClienteUseCase: AddClienteUseCase,
+    private val addLocalClienteUseCase: AddLocalClienteUseCase,
     private val cameraManagerRepository: CameraManagerRepository,
     private val publicAppFolderManagerRepository: PublicAppFolderManagerRepository,
-    private val vibratorRepository: VibratorRepository
+    private val vibratorRepository: VibratorRepository,
+    private val connectivityMonitorRepository: ConnectivityMonitorRepository
 ) : ViewModel() {
     private val _claveCliente = MutableStateFlow<String>("")
     val claveCliente: StateFlow<String> = _claveCliente.asStateFlow()
@@ -104,9 +109,9 @@ class AgregarClienteViewModel(
             ),
         )
 
-    fun vibrate(){
+    fun vibrate() {
         viewModelScope.launch {
-            if (vibratorRepository.hasVibrator()){
+            if (vibratorRepository.hasVibrator()) {
                 vibratorRepository.vibrate()
             }
         }
@@ -129,30 +134,61 @@ class AgregarClienteViewModel(
             return
         }
 
+        try {
+            _loading.value = true
+            val isConnected = connectivityMonitorRepository.isCurrentlyConnected()
+            if (isConnected) {
+                agregarAPI()
+            } else {
+                agregarLocal()
+            }
+        } catch (e: Exception) {
+            Log.e("AgregarClienteViewModel", "Error: ${e.message}")
+            vibrate()
+            _stateResponse.value = Response(error = "Error de conexión. Inténtalo de nuevo.")
+        } finally {
+            _loading.value = false
+        }
+
+    }
+
+    private fun agregarAPI() {
         viewModelScope.launch {
-            try {
-                _loading.value = true
+            val result: Response = addClienteUseCase(
+                _claveCliente.value.trim(),
+                _nombre.value,
+                _celular.value.trim(),
+                _email.value.trim(),
+                _characterIcon.value
+            )
 
-                val result: Response = agregarClienteUseCase(
-                    _claveCliente.value.trim(),
-                    _nombre.value,
-                    _celular.value.trim(),
-                    _email.value.trim(),
-                    _characterIcon.value
+            if (result.error.isNullOrEmpty()) {
+                _stateResponse.value =
+                    Response(message = "${_nombre.value} se agrego correctamente")
+            } else {
+                _stateResponse.value = result
+            }
+        }
+    }
+
+    private fun agregarLocal(){
+        viewModelScope.launch {
+
+            val result: Response = addLocalClienteUseCase(
+                    cliente = Cliente(
+                        claveCliente = _claveCliente.value.trim(),
+                        nombre = _nombre.value,
+                        celular = _celular.value.trim(),
+                        email = _email.value.trim(),
+                        characterIcon = _characterIcon.value,
+                        isLocal = true
+                    )
                 )
-
-                if (result.error.isNullOrEmpty()) {
-                    _stateResponse.value =
-                        Response(message = "${_nombre.value} se agrego correctamente")
-                } else {
-                    _stateResponse.value = result
-                }
-            } catch (e: Exception) {
-                Log.e("AgregarClienteViewModel","Error: ${e.message}")
-                vibrate()
-                _stateResponse.value = Response(error = "Error de conexión. Inténtalo de nuevo.")
-            } finally {
-                _loading.value = false
+            if (result.error.isNullOrEmpty()) {
+                _stateResponse.value =
+                    Response(message = "${_nombre.value} se agrego correctamente")
+            } else {
+                _stateResponse.value = result
             }
         }
     }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import com.draken.app_movil_pm.R
 import kotlinx.coroutines.launch
 import com.draken.app_movil_pm.core.connectivity_monitor.domain.ConnectivityMonitorRepository
+import com.draken.app_movil_pm.core.domain.model.CharacterIcon
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.core.rooms.domain.usecase.GetLocalClientesPageUseCase
 import com.draken.app_movil_pm.features.clientes.domain.usecase.GetClientesPageUseCase
@@ -40,14 +41,41 @@ class ClientesViewModel(
     private fun getLocalClientesPage(page: Int) {
         viewModelScope.launch {
             getLocalClientesPageUseCase(page = page).collect {
-                _clientes.value = it.toDomain()
+                _clientes.value = it.toDomain().map {
+                    cliente ->
+                    Cliente(
+                        claveCliente = cliente.claveCliente,
+                        nombre = cliente.nombre,
+                        email = cliente.email,
+                        celular = cliente.celular,
+                        characterIcon = CharacterIcon(
+                            characterIconNumber = icons[cliente.characterIcon.characterIconNumber],
+                            characterIconUrl = cliente.characterIcon.characterIconUrl,
+                            characterIconUri = cliente.characterIcon.characterIconUri
+                        ),
+                        isLocal = cliente.isLocal
+                    )
+                }
             }
         }
     }
 
     private fun fetchClientes(page: Int) {
         viewModelScope.launch {
-            _clientes.value = getClientesPageUseCase(page = page)
+            _clientes.value = getClientesPageUseCase(page = page).map {
+                cliente ->
+                Cliente(
+                    claveCliente = cliente.claveCliente,
+                    nombre = cliente.nombre,
+                    email = cliente.email,
+                    celular = cliente.celular,
+                    characterIcon = CharacterIcon(
+                        characterIconNumber = icons[cliente.characterIcon.characterIconNumber],
+                        characterIconUrl = cliente.characterIcon.characterIconUrl,
+                        characterIconUri = cliente.characterIcon.characterIconUri
+                    )
+                )
+            }
         }
     }
 

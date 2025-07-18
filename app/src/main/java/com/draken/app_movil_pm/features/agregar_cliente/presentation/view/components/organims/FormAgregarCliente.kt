@@ -131,6 +131,7 @@ fun FormAgregarCliente(
             }
         } else {
             ImageCircleComponent(
+                modifier = Modifier.fillMaxSize(),
                 imageUri = characterIcon.characterIconUri,
                 onDeleteClick = { onChangeCharacterIconUri(null) }
             )

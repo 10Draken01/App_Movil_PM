@@ -3,5 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         // API AWS
         <domain includeSubdomains="false">3.226.22.159</domain>
+        <domain includeSubdomains="false">10.140.243.145</domain>
     </domain-config>
 </network-security-config>

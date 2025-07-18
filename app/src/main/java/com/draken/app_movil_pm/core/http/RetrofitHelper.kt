@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitHelper {
 
-    private const val BASE_URL = "http://3.226.22.159:8000/api/"
+    private const val BASE_URL = "http://10.140.243.145:8000/api/"
     private const val TIMEOUT = 20L
 
     private var retrofit: Retrofit? = null
