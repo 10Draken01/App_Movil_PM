@@ -28,6 +28,7 @@ fun AppNavigation(
     )
 ) {
     val navController: NavHostController = rememberNavController()
+    sharedViewModel.setNavController(navController)
     val isConnected by sharedViewModel.isConnected.collectAsState()
 
     NavHost(

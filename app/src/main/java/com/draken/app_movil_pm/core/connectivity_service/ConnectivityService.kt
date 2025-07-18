@@ -9,8 +9,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.draken.app_movil_pm.R
+import com.draken.app_movil_pm.core.app_context.AppContextHolder
+import com.draken.app_movil_pm.core.connectivity_monitor.data.ConnectivityMonitor
 import com.draken.app_movil_pm.core.connectivity_monitor.domain.ConnectivityMonitorRepository
 import com.draken.app_movil_pm.core.di.ConnectivityMonitorModule
 import kotlinx.coroutines.CoroutineScope
@@ -39,8 +42,7 @@ class ConnectivityService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-
-        connectivityMonitorRepository = ConnectivityMonitorModule.connectivityMonitorRepository
+        connectivityMonitorRepository = ConnectivityMonitor(context = this)
         // O si tienes: ConnectivityMonitorImpl(MyApplication.instance)
 
         // Crear canal de notificaciones
@@ -126,20 +128,18 @@ class ConnectivityService : Service() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW // Baja prioridad = no interrumpe
-            ).apply {
-                description = "Monitoreo del estado de conexión a internet para sincronización"
-                setSound(null, null) // Sin sonido
-                enableVibration(false) // Sin vibración
-            }
-
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(channel)
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_LOW // Baja prioridad = no interrumpe
+        ).apply {
+            description = "Monitoreo del estado de conexión a internet para sincronización"
+            setSound(null, null) // Sin sonido
+            enableVibration(false) // Sin vibración
         }
+
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager?.createNotificationChannel(channel)
     }
 
     private fun createNotification(connected: Boolean): Notification {
@@ -150,13 +150,10 @@ class ConnectivityService : Service() {
             .setContentTitle(title)
             .setContentText(text)
             .setSmallIcon(
-                if (connected) {
-                    R.drawable.logo
-                } else {
-                    // ✅ CORREGIDO: Usar iconos del sistema Android
-                    android.R.drawable.stat_sys_warning
-                }
+                R.drawable.logo
             )
+            .setColorized(true)
+            .setColor(Notification.DEFAULT_ALL)
             .setOngoing(true) // No se puede deslizar para cerrar
             .setAutoCancel(false) // No se cierra al tocar
             .setPriority(NotificationCompat.PRIORITY_LOW) // Baja prioridad

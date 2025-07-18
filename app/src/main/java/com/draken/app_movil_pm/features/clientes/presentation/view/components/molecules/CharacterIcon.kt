@@ -40,11 +40,13 @@ fun CharacterIcon(
             // Priorizar URL si existe y no está vacía
             if (!characterIcon.characterIconUrl?.url.isNullOrEmpty()) {
                 ImageWithLoading(
-                    imageUrl = characterIcon.characterIconUrl!!.url,
+                    imageUrl = characterIcon.characterIconUrl.url,
                     loadingColor = loadingColor,
                     fallbackIconRes = characterIcon.characterIconNumber,
                     iconSize = iconSize
                 )
+            } else if (characterIcon.characterIconUri != null){
+                // Usar URI si existe
             } else {
                 // Usar icono local si no hay URL
                 LocalIcon(

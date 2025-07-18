@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
+import com.draken.app_movil_pm.core.rooms.data.domain.Converters
 import com.draken.app_movil_pm.core.rooms.domain.dao.ClienteDao
 import com.draken.app_movil_pm.core.rooms.domain.model.ClienteEntitie // Assuming this path is correct
-import java.util.Date
+
 
 @Database(
     entities = [ClienteEntitie::class],
@@ -44,23 +44,3 @@ abstract class ClientesAppDatabase : RoomDatabase() {
         }
     }
 }
-
-// Converters class remains the same
-class Converters {
-    @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
-    }
-
-    @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
-    }
-}
-
-// Example DAO interface (you'll need to create this)
-// import androidx.room.Dao
-// @Dao
-// interface ClienteDao {
-//     // Define your database operations here
-// }

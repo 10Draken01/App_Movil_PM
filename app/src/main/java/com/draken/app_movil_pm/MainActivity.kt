@@ -17,7 +17,7 @@ import com.draken.app_movil_pm.ui.theme.App_Movil_PMTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppContextHolder.init(this)
+        AppContextHolder.init(context= this)
         startConnectivityService()
         // ViewModel compartido a nivel de navegación
         enableEdgeToEdge()

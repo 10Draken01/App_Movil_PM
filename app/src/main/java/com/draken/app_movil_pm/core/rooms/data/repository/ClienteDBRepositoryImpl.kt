@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class ClienteDBRepositoryImpl(
     private val database: ClientesAppDatabase
 ): ClienteDBRepository {
-    override suspend fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>> {
+    override fun getClientesPage(limit: Int, offset: Int): Flow<List<ClienteEntitie>> {
         return database
             .clienteDao()
             .getClientesPage(

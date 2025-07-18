@@ -10,7 +10,11 @@ class GetClientesPageUseCase (private val repository: ClienteRepository) {
         var clientes: List<Cliente> = emptyList()
         res.onSuccess {
             data ->
-            clientes = data.data.clientes.map { it.toDomain() }
+            clientes = data.data.clientes.map {
+                it ->
+                Log.i("getClientes", "Cliente: ${it.nombre}")
+                it.toDomain()
+            }
         }
         res.onFailure {
             err ->

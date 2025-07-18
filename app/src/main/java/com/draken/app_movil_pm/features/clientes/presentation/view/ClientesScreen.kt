@@ -28,7 +28,7 @@ import com.draken.app_movil_pm.core.di.LocalClientesModule
 import com.draken.app_movil_pm.core.domain.model.Cliente
 import com.draken.app_movil_pm.features.clientes.di.ClientesModule
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.atoms.TopBarCustom
-import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ClienteCard
+import com.draken.app_movil_pm.features.clientes.presentation.view.components.organims.ClienteCard
 import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ControlesPaginas
 import com.draken.app_movil_pm.features.clientes.presentation.viewmodel.ClientesViewModel
 import com.draken.app_movil_pm.features.clientes.presentation.viewmodel.ClientesViewModelFactory

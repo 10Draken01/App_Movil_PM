@@ -11,7 +11,7 @@ class GetLocalClientesPageUseCase(
     private val reposiClienteDBRepository: ClienteDBRepository
 ) {
     // La función invoke ahora devuelve un Flow<ResponseRooms>
-    operator suspend fun invoke(page: Int): Flow<ResponseRooms> {
+    operator fun invoke(page: Int): Flow<ResponseRooms> {
         val limit = 100
         val offset = (page - 1) * limit
 

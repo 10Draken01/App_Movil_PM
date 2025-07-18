@@ -1,4 +1,4 @@
-package com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules
+package com.draken.app_movil_pm.features.clientes.presentation.view.components.organims
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -25,6 +25,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.draken.app_movil_pm.core.domain.model.Cliente
+import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ClienteCardHeader
+import com.draken.app_movil_pm.features.clientes.presentation.view.components.molecules.ClienteExpandedContent
 
 // Constantes para mantener consistencia en el diseño
 private val CARD_PADDING = 6.dp

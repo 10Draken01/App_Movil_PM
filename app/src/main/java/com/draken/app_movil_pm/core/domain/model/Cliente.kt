@@ -8,5 +8,6 @@ data class Cliente(
     val characterIcon: CharacterIcon,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val queryType: QueryType? = null
+    val queryType: QueryType? = null,
+    val isLocal: Boolean = false
 )

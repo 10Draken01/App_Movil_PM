@@ -1,5 +1,6 @@
 package com.draken.app_movil_pm.features.clientes.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +34,7 @@ class ClientesViewModel(
         } else {
             getLocalClientesPage(page = page)
         }
+
     }
 
     private fun getLocalClientesPage(page: Int) {
